@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Gestão">
+        <menu>
+            <item
+                android:id="@+id/dashboard"
+                android:icon="@drawable/ic_baseline_calendar_month_24"
+                android:title="Dados diários">
+
+            </item>
+            <item
+                android:id="@+id/statistic"
+                android:icon="@drawable/ic_baseline_calculate_24"
+                android:title="Estatistica">
+
+            </item>
+            <item
+                android:id="@+id/budgets"
+                android:icon="@drawable/ic_baseline_monetization_on_24"
+                android:title="Orçamentos">
+
+            </item>
+        </menu>
+    </item>
+
+    <item android:title="Perfil">
+        <menu>
+            <item
+                android:id="@+id/profile"
+                android:icon="@drawable/ic_baseline_person_24"
+                android:title="Dados do perfil"
+                >
+
+            </item>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_baseline__door_24"
+        android:title="logout">
+    </item>
+</menu>

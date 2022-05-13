@@ -26,4 +26,10 @@ public class MainActivity extends AppCompatActivity {
         Intent registerActivity = new Intent(this, RegisterActivity.class);
         startActivity(registerActivity);
     }
+
+    // send to Register Activity
+    public void onDASHActivity(View v){
+        Intent dashboardActivity = new Intent(this, DashboardActivity.class);
+        startActivity(dashboardActivity);
+    }
 }

@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Monneymannagerapp">
         <activity
+            android:name=".DashboardActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
