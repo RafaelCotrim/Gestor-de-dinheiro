@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Base64;
+
 @SpringBootApplication
 @RestController
 public class Application {
@@ -22,8 +24,24 @@ public class Application {
 
 	@Bean
 	public CommandLineRunner run() {
+		Base64.Decoder encoder = Base64.getDecoder();
 		return args -> {
-			userRepository.save(new User(1, "Rafael", "rafael.cotrim@gmail.com", "salt", "hash"));
+			userRepository.save(new User(
+					"Admin",
+					"admin@gmail.com",
+					encoder.decode("xEJZNyhLw7d0P2XW3veJmA==".getBytes()),
+					encoder.decode("+yYGSymR1yG2yMqznOKcTA==".getBytes()),
+					true)
+			);
+
+			userRepository.save(new User(
+					"User",
+					"user@gmail.com",
+					encoder.decode("k7rhJIbaKwobNMRoftbYhA==".getBytes()),
+					encoder.decode("0q1yuPp/SOwut2UMQzoQuQ==".getBytes()),
+					false)
+			);
+
 		};
 	}
 

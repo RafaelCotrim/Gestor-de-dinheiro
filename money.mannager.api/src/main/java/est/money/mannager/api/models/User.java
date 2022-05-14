@@ -13,9 +13,10 @@ public class User {
 
     private String name;
     private String email;
+    private boolean isAdmin;
 
-    private String salt;
-    private String hashPass;
+    private byte[] salt;
+    private byte[] hashPass;
 
     @OneToMany(mappedBy="user")
     private List<Transaction> transactions;
@@ -28,8 +29,7 @@ public class User {
 
     public User(){}
 
-    public User(long id, String name, String email, String salt, String hashPass) {
-        this.id = id;
+    public User(String name, String email, byte[] salt, byte[] hashPass, boolean isAdmin) {
         this.name = name;
         this.email = email;
         this.salt = salt;
@@ -37,6 +37,7 @@ public class User {
         this.transactions = new ArrayList<>();
         this.categories = new ArrayList<>();
         this.budgets = new ArrayList<>();
+        this.isAdmin = isAdmin;
     }
 
     public long getId() {
@@ -63,19 +64,19 @@ public class User {
         this.email = email;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 
-    public String getHashPass() {
+    public byte[] getHashPass() {
         return hashPass;
     }
 
-    public void setHashPass(String hashPass) {
+    public void setHashPass(byte[] hashPass) {
         this.hashPass = hashPass;
     }
 
@@ -101,5 +102,13 @@ public class User {
 
     public void setBudgets(List<Budget> budgets) {
         this.budgets = budgets;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
