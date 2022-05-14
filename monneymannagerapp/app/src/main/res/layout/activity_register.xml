@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <TextView
+        android:id="@+id/login_hyperlink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:onClick="onLoginActivity"
+        android:text="Iniciar sessão."
+        android:textColor="#2196F3"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/submit_regist_button" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text=" Já tem conta? "
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/submit_regist_button" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.81" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <EditText
+        android:id="@+id/name_regist_input"
+        android:layout_width="288dp"
+        android:layout_height="59dp"
+        android:drawableLeft="@drawable/user_icon"
+        android:ems="10"
+        android:hint="Nome"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/email_regist_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline9" />
+
+    <EditText
+        android:id="@+id/email_regist_input"
+        android:layout_width="294dp"
+        android:layout_height="49dp"
+        android:drawableLeft="@drawable/email_icon"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/pass_regist_input"
+        app:layout_constraintStart_toStartOf="@+id/name_regist_input"
+        app:layout_constraintTop_toBottomOf="@+id/name_regist_input" />
+
+    <EditText
+        android:id="@+id/conf_pass_regist_input"
+        android:layout_width="294dp"
+        android:layout_height="49dp"
+        android:drawableLeft="@drawable/lock"
+        android:ems="10"
+        android:hint="Confirmar password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/pass_regist_input"
+        app:layout_constraintTop_toBottomOf="@+id/pass_regist_input" />
+
+    <EditText
+        android:id="@+id/pass_regist_input"
+        android:layout_width="294dp"
+        android:layout_height="49dp"
+        android:drawableLeft="@drawable/lock"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/conf_pass_regist_input"
+        app:layout_constraintStart_toStartOf="@+id/email_regist_input"
+        app:layout_constraintTop_toBottomOf="@+id/email_regist_input" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="210dp"
+        android:layout_height="216dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/money" />
+
+    <Button
+        android:id="@+id/submit_regist_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registar-se"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
