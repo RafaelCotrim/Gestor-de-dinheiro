@@ -1,6 +1,8 @@
 package est.money.mannager.api;
 
+import est.money.mannager.api.models.Transaction;
 import est.money.mannager.api.models.User;
+import est.money.mannager.api.repositories.TransactionRepository;
 import est.money.mannager.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -18,6 +20,9 @@ public class Application {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private TransactionRepository transactionRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -34,14 +39,18 @@ public class Application {
 					true)
 			);
 
-			userRepository.save(new User(
+			User u = new User(
 					"User",
 					"user@gmail.com",
 					encoder.decode("k7rhJIbaKwobNMRoftbYhA==".getBytes()),
 					encoder.decode("0q1yuPp/SOwut2UMQzoQuQ==".getBytes()),
-					false)
-			);
+					false);
 
+			userRepository.save(u);
+
+			transactionRepository.save(new Transaction(100, u, null));
+			transactionRepository.save(new Transaction(100, u, null));
+			transactionRepository.save(new Transaction(100, u, null));
 		};
 	}
 
