@@ -1,5 +1,8 @@
 package est.money.mannager.api.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,12 +16,15 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name="user_id")
+    @JsonBackReference
     private User user;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     private List<Transaction> transactions;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     private List<Budget> budgets;
 
     public Category(){};

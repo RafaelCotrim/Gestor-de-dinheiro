@@ -1,5 +1,7 @@
 package est.money.mannager.api.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +21,15 @@ public class User {
     private byte[] hashPass;
 
     @OneToMany(mappedBy="user")
+    @JsonManagedReference
     private List<Transaction> transactions;
 
     @OneToMany(mappedBy="user")
+    @JsonManagedReference
     private List<Category> categories;
 
     @OneToMany(mappedBy="user")
+    @JsonManagedReference
     private List<Budget> budgets;
 
     public User(){}

@@ -1,5 +1,7 @@
 package est.money.mannager.api.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,16 +14,17 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name="user_id")
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name="category_id")
+    @JsonBackReference
     private Category category;
 
     public Transaction(){}
 
-    public Transaction(long id, double value, User user, Category category) {
-        this.id = id;
+    public Transaction(double value, User user, Category category) {
         this.value = value;
         this.user = user;
         this.category = category;
