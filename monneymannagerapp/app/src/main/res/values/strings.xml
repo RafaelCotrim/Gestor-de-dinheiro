@@ -2,4 +2,9 @@
     <string name="app_name">Money manager</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="user_name_preference" translatable="false">user_name</string>
+    <string name="user_email_preference" translatable="false">user_email</string>
+    <string name="user_admin_preference" translatable="false">user_admin</string>
+    <string name="preference_file" translatable="false">money.mannager</string>
+    <string name="user_id_preference" translatable="false">user_id</string>
 </resources>
