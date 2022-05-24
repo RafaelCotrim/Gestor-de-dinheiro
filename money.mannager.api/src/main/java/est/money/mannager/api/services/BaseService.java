@@ -12,7 +12,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public abstract class BaseService <T, TRepo extends CrudRepository<T, Long>>{
 
     @Autowired
-    private TRepo repo;
+    protected TRepo repo;
 
     public List<T> findAll(){
         return (List<T>) repo.findAll();

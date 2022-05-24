@@ -16,7 +16,6 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
-import java.util.Locale;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -34,7 +33,7 @@ public class AuthService {
 
         if(Arrays.equals(hash, u.getHashPass())){
             return new UserDTO(u.getId(), u.getName(), u.getEmail(), u.isAdmin());
-        };
+        }
 
         throw new ResponseStatusException(BAD_REQUEST);
     }
@@ -44,9 +43,7 @@ public class AuthService {
         ufr.setEmail(ufr.getEmail().toLowerCase());
 
         if(!ufr.getPassword().equals(ufr.getConfirmation())){
-            System.out.println(ufr.getPassword());
-            System.out.println(ufr.getConfirmation());
-            throw new ResponseStatusException(BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, "Password and confirmation password do not match");
         }
 
         if(userRepository.existsByEmail(ufr.getEmail())){
@@ -69,14 +66,14 @@ public class AuthService {
 
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
 
-        SecretKeyFactory factory = null;
+        SecretKeyFactory factory;
         try {
             factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         } catch (NoSuchAlgorithmException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR);
         }
 
-        byte[] hash = null;
+        byte[] hash;
 
         try {
             hash = factory.generateSecret(spec).getEncoded();

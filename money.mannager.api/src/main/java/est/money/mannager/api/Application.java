@@ -1,7 +1,11 @@
 package est.money.mannager.api;
 
+import est.money.mannager.api.models.Budget;
+import est.money.mannager.api.models.Category;
 import est.money.mannager.api.models.Transaction;
 import est.money.mannager.api.models.User;
+import est.money.mannager.api.repositories.BudgetRepository;
+import est.money.mannager.api.repositories.CategoryRepository;
 import est.money.mannager.api.repositories.TransactionRepository;
 import est.money.mannager.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,12 @@ public class Application {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private BudgetRepository budgetRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -39,18 +49,20 @@ public class Application {
 					true)
 			);
 
-			User u = new User(
+			User u = userRepository.save(new User(
 					"User",
 					"user@gmail.com",
 					encoder.decode("k7rhJIbaKwobNMRoftbYhA==".getBytes()),
 					encoder.decode("0q1yuPp/SOwut2UMQzoQuQ==".getBytes()),
-					false);
+					false));
 
-			userRepository.save(u);
+			Category c =  categoryRepository.save(new Category("Comida", u));
 
-			transactionRepository.save(new Transaction(100, u, null));
-			transactionRepository.save(new Transaction(100, u, null));
-			transactionRepository.save(new Transaction(100, u, null));
+			Budget b = budgetRepository.save(new Budget(150, u, c));
+
+			transactionRepository.save(new Transaction(100, u, c));
+			transactionRepository.save(new Transaction(100, u, c));
+			transactionRepository.save(new Transaction(100, u, c));
 		};
 	}
 

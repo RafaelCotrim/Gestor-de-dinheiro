@@ -11,20 +11,17 @@ import java.util.List;
 @Service
 public class TransactionService extends BaseService<Transaction, TransactionRepository>{
 
-    @Autowired
-    private TransactionRepository transactionRepository;
-
     public Transaction update(Long id, Transaction newValue){
 
-        return transactionRepository.findById(id)
+        return repo.findById(id)
                 .map(transaction -> {
                     transaction.setCategory(newValue.getCategory());
                     transaction.setValue(newValue.getValue());
-                    return transactionRepository.save(transaction);
+                    return repo.save(transaction);
                 })
                 .orElseGet(() -> {
                     newValue.setId(id);
-                    return transactionRepository.save(newValue);
+                    return repo.save(newValue);
                 });
     }
 }

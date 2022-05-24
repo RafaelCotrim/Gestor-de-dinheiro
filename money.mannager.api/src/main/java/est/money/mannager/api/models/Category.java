@@ -16,25 +16,22 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    @JsonBackReference
+    @JsonBackReference("user_category")
     private User user;
 
     @OneToMany(mappedBy = "category")
-    @JsonManagedReference
+    @JsonManagedReference("category_transaction")
     private List<Transaction> transactions;
 
     @OneToMany(mappedBy = "category")
-    @JsonManagedReference
+    @JsonManagedReference("category_budget")
     private List<Budget> budgets;
 
     public Category(){};
 
-    public Category(long id, String name, User user, List<Transaction> transactions, List<Budget> budgets) {
-        this.id = id;
+    public Category(String name, User user) {
         this.name = name;
         this.user = user;
-        this.transactions = transactions;
-        this.budgets = budgets;
     }
 
     public long getId() {

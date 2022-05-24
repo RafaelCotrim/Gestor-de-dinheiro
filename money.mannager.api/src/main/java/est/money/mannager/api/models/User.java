@@ -21,15 +21,15 @@ public class User {
     private byte[] hashPass;
 
     @OneToMany(mappedBy="user")
-    @JsonManagedReference
+    @JsonManagedReference("user_transaction")
     private List<Transaction> transactions;
 
     @OneToMany(mappedBy="user")
-    @JsonManagedReference
+    @JsonManagedReference("user_category")
     private List<Category> categories;
 
     @OneToMany(mappedBy="user")
-    @JsonManagedReference
+    @JsonManagedReference("user_budget")
     private List<Budget> budgets;
 
     public User(){}

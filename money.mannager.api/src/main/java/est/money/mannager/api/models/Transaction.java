@@ -14,12 +14,12 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    @JsonBackReference
+    @JsonBackReference("user_transaction")
     private User user;
 
     @ManyToOne
     @JoinColumn(name="category_id")
-    @JsonBackReference
+    @JsonBackReference("category_transaction")
     private Category category;
 
     public Transaction(){}
