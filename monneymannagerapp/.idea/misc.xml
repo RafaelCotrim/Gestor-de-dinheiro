@@ -4,8 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/activity_dashboard.xml" value="0.25729166666666664" />
-        <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/activity_login.xml" value="0.2453125" />
+        <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/activity_main.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/activity_profile.xml" value="0.1474164133738602" />
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/activity_register.xml" value="0.2" />
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/budget_fragment.xml" value="0.2115036231884058" />
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/content_main.xml" value="0.3067708333333333" />
@@ -13,7 +14,7 @@
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/drawer_menu.xml" value="0.3067708333333333" />
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/drawer_toolbar.xml" value="0.3177083333333333" />
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/main_fragment.xml" value="0.1" />
-        <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/profile_fragment.xml" value="0.2115036231884058" />
+        <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/profile_fragment.xml" value="0.25" />
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/layout/statisctic_fragment.xml" value="0.1" />
         <entry key="..\:/Users/joana/OneDrive/Ambiente de Trabalho/AID_SE/Gestor-de-dinheiro/monneymannagerapp/app/src/main/res/menu/drawer_menu.xml" value="0.3067708333333333" />
       </map>
@@ -24,5 +25,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.25729166666666664" />
+      </ProjectState>
+    </option>
   </component>
 </project>

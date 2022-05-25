@@ -7,7 +7,7 @@
     tools:context=".LoginActivity">
 
     <EditText
-        android:id="@+id/email_login_input"
+        android:id="@+id/testtt"
         android:layout_width="294dp"
         android:layout_height="49dp"
         android:drawableLeft="@drawable/user_icon"

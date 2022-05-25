@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -86,8 +87,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             //carregar fragment de dados pessoais
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container, new ProfileFragment());
-            fragmentTransaction.commit();
+            Intent profileActivity = new Intent(this, ProfileActivity.class);
+            startActivity(profileActivity);
         }
         if(menuItem.getItemId() == R.id.logout){
             //efetuar logout
