@@ -4,78 +4,92 @@ import est.money.mannager.api.models.Budget;
 import est.money.mannager.api.models.Category;
 import est.money.mannager.api.models.Transaction;
 import est.money.mannager.api.models.User;
-import est.money.mannager.api.repositories.UserRepository;
+import est.money.mannager.api.repositories.BudgetRepository;
+import est.money.mannager.api.repositories.CategoryRepository;
+import est.money.mannager.api.services.TransactionService;
+import est.money.mannager.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-
-import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
+    @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private BudgetRepository budgetRepository;
 
     @GetMapping
     public List<User> findAll() {
-        return (List<User>) userRepository.findAll();
+        return userService.findAll();
     }
 
+    /*
     @PostMapping
-    public User newUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public User save(@RequestBody User user) {
+        return userService.save(user);
     }
+    */
 
     @GetMapping("/{id}")
     public User findUser(@PathVariable long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "User not found"));
+        return userService.find(id);
     }
 
     @PutMapping("/{id}")
-    User updateUser(@RequestBody User newUser, @PathVariable Long id) {
+    public User updateUser(@RequestBody User newUser, @PathVariable Long id) {
 
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setName(newUser.getName());
-                    user.setEmail(newUser.getEmail());
-                    return userRepository.save(user);
-                })
-                .orElseGet(() -> {
-                    newUser.setId(id);
-                    return userRepository.save(newUser);
-                });
+        return userService.update(id, newUser);
     }
 
     @DeleteMapping("/{id}")
     void deleteUser(@PathVariable Long id) {
-
-        if(userRepository.findById(id).isPresent()){
-            userRepository.deleteById(id);
-            return;
-        }
-
-        throw new ResponseStatusException(NOT_FOUND, "User not found");
-
+        userService.delete(id);
     }
 
     @GetMapping("/{id}/transactions")
     public List<Transaction> findUserTransactions(@PathVariable long id) {
-        return findUser(id).getTransactions();
+        return userService.find(id).getTransactions();
+    }
+
+    @PostMapping("/{id}/transactions")
+    public Transaction addTransactionToUser(@PathVariable Long id, @RequestBody Transaction newTransaction){
+        User u = userService.find(id);
+        newTransaction.setUser(u);
+        return transactionService.save(newTransaction);
     }
 
     @GetMapping("/{id}/categories")
     public List<Category> findUserCategories(@PathVariable long id) {
-        return findUser(id).getCategories();
+        return userService.find(id).getCategories();
+    }
+
+    @PostMapping("/{id}/categories")
+    public Category addCategoryToUser(@PathVariable Long id, @RequestBody Category newCategory){
+        User u = userService.find(id);
+        newCategory.setUser(u);
+        return categoryRepository.save(newCategory);
     }
 
     @GetMapping("/{id}/budgets")
     public List<Budget> getUserBudgets(@PathVariable long id) {
-        return findUser(id).getBudgets();
+        return userService.find(id).getBudgets();
     }
 
+    @PostMapping("/{id}/budgets")
+    public Budget addBudgetToUser(@PathVariable Long id, @RequestBody Budget newBudget){
+        User u = userService.find(id);
+        newBudget.setUser(u);
+        return budgetRepository.save(newBudget);
+    }
 }
