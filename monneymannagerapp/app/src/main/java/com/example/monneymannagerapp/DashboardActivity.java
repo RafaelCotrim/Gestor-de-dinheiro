@@ -64,8 +64,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             //carregar fragment principal
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container, new MainFragment());
-            fragmentTransaction.commit();
+            Intent dailyTransactionsActivity = new Intent(this, DailyTransactionsActivity.class);
+            startActivity(dailyTransactionsActivity);
         }
 
         if(menuItem.getItemId() == R.id.statistic){

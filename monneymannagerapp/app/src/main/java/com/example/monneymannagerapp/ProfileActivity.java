@@ -38,6 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
 //
         nameEditInput.setText("Nome pesquisado na API");
         emailEditInput.setText("Email pesquisado na API");
+
     }
 
     // edit method
