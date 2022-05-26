@@ -1,7 +1,7 @@
-package est.money.mannager.api.dtos;
+package com.example.monneymannagerapp.api.dtos;
 
 public class TransactionForCreate {
     public double value;
-    public long categoryId;
     public long userId;
+    public long categoryId;
 }

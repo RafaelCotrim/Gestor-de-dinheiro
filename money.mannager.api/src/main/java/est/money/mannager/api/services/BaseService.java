@@ -26,6 +26,10 @@ public abstract class BaseService <T, TRepo extends CrudRepository<T, Long>>{
         return repo.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
+    public T findOrNull(long id) {
+        return repo.findById(id).orElse(null);
+    }
+
     public void delete(Long id) {
         if(repo.findById(id).isPresent()){
             repo.deleteById(id);

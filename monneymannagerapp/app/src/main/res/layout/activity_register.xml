@@ -111,6 +111,7 @@
         android:id="@+id/submit_regist_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onSubmit"
         android:text="Registar-se"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -14,6 +14,7 @@ import com.example.monneymannagerapp.api.Api;
 import com.example.monneymannagerapp.api.dtos.TransactionDto;
 import com.example.monneymannagerapp.api.dtos.UserDto;
 import com.example.monneymannagerapp.api.dtos.UserForLogin;
+import com.example.monneymannagerapp.api.dtos.UserForRegister;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private Api api;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +33,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         api = APIClient.getApi();
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
 
-        UserForLogin ufl = new UserForLogin();
-        ufl.email = "user@gmail.com";
-        ufl.password = "user";
-
-
-        api.getTransactions().enqueue(new Callback<List<TransactionDto>>() {
+        api.getTransactions(true, true).enqueue(new Callback<List<TransactionDto>>() {
 
             @Override
             public void onResponse(Call<List<TransactionDto>> call, Response<List<TransactionDto>> response) {
-
                 for (TransactionDto t: response.body()) {
                     Log.v("TEST", "" + t.id);
                 }
@@ -81,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkLogin(){
-        SharedPreferences sharedPref = this.getSharedPreferences(
-                getString(R.string.preference_file),
-                Context.MODE_PRIVATE);
 
         if(sharedPref.getLong(getString(R.string.user_id_preference), 0) != 0){
             Intent dashboardActivity = new Intent(this, DashboardActivity.class);

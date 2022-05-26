@@ -10,6 +10,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -32,6 +35,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
+    private SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +49,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         //estabelecer evento onClick na navigationView
         navigationView.setNavigationItemSelectedListener(this);
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open,R.string.close);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
@@ -54,6 +59,16 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.container, new MainFragment());
         fragmentTransaction.commit();
+
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
+
+        checkLogin();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkLogin();
     }
 
     @Override
@@ -90,9 +105,24 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             fragmentTransaction.commit();
         }
         if(menuItem.getItemId() == R.id.logout){
-            //efetuar logout
-            Toast.makeText(DashboardActivity.this, "TODO: Logout!", Toast.LENGTH_LONG).show();
+            logout();
         }
         return false;
+    }
+
+    private void checkLogin(){
+        if(sharedPref.getLong(getString(R.string.user_id_preference), 0) == 0){
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+
+    private void logout(){
+        sharedPref.edit().remove(getString(R.string.user_id_preference))
+                .remove(getString(R.string.user_admin_preference))
+                .remove(getString(R.string.user_email_preference))
+                .remove(getString(R.string.user_name_preference))
+                .apply();
+
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
