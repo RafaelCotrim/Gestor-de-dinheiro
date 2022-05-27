@@ -91,9 +91,24 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             startActivity(profileActivity);
         }
         if(menuItem.getItemId() == R.id.logout){
-            //efetuar logout
-            Toast.makeText(DashboardActivity.this, "TODO: Logout!", Toast.LENGTH_LONG).show();
+            logout();
         }
         return false;
+    }
+
+    private void checkLogin(){
+        if(sharedPref.getLong(getString(R.string.user_id_preference), 0) == 0){
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+
+    private void logout(){
+        sharedPref.edit().remove(getString(R.string.user_id_preference))
+                .remove(getString(R.string.user_admin_preference))
+                .remove(getString(R.string.user_email_preference))
+                .remove(getString(R.string.user_name_preference))
+                .apply();
+
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

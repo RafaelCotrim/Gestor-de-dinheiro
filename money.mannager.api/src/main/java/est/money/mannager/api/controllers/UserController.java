@@ -1,17 +1,18 @@
 package est.money.mannager.api.controllers;
 
+import est.money.mannager.api.dtos.TransactionDto;
 import est.money.mannager.api.models.Budget;
 import est.money.mannager.api.models.Category;
-import est.money.mannager.api.models.Transaction;
 import est.money.mannager.api.models.User;
 import est.money.mannager.api.repositories.BudgetRepository;
-import est.money.mannager.api.repositories.CategoryRepository;
+import est.money.mannager.api.services.CategoryService;
 import est.money.mannager.api.services.TransactionService;
 import est.money.mannager.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -24,7 +25,7 @@ public class UserController {
     private TransactionService transactionService;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     @Autowired
     private BudgetRepository budgetRepository;
@@ -58,38 +59,48 @@ public class UserController {
     }
 
     @GetMapping("/{id}/transactions")
-    public List<Transaction> findUserTransactions(@PathVariable long id) {
-        return userService.find(id).getTransactions();
+    public List<TransactionDto> findUserTransactions(@PathVariable long id,
+                                                     @RequestParam(name="user-info", required = false) boolean userInfo,
+                                                     @RequestParam(name="category-info", required = false) boolean categoryInfo) {
+        return userService.find(id).getTransactions().stream().map(x -> TransactionDto.from(x, userInfo, categoryInfo)).collect(Collectors.toList());
     }
 
+    /*
     @PostMapping("/{id}/transactions")
-    public Transaction addTransactionToUser(@PathVariable Long id, @RequestBody Transaction newTransaction){
+    public TransactionDto addTransactionToUser(@PathVariable Long id, @RequestBody TransactionForCreate tfuc){
         User u = userService.find(id);
-        newTransaction.setUser(u);
-        return transactionService.save(newTransaction);
+        Category c = categoryService.find(tfuc.categoryId);
+        Transaction t = new Transaction(tfuc.value, u, c);
+        return TransactionDto.from(transactionService.save(t));
     }
+    */
+
 
     @GetMapping("/{id}/categories")
     public List<Category> findUserCategories(@PathVariable long id) {
         return userService.find(id).getCategories();
     }
 
+    /*
     @PostMapping("/{id}/categories")
     public Category addCategoryToUser(@PathVariable Long id, @RequestBody Category newCategory){
         User u = userService.find(id);
         newCategory.setUser(u);
-        return categoryRepository.save(newCategory);
+        return categoryService.save(newCategory);
     }
+    */
 
     @GetMapping("/{id}/budgets")
     public List<Budget> getUserBudgets(@PathVariable long id) {
         return userService.find(id).getBudgets();
     }
 
+    /*
     @PostMapping("/{id}/budgets")
     public Budget addBudgetToUser(@PathVariable Long id, @RequestBody Budget newBudget){
         User u = userService.find(id);
         newBudget.setUser(u);
         return budgetRepository.save(newBudget);
     }
+    */
 }

@@ -7,4 +7,6 @@
     <string name="user_admin_preference" translatable="false">user_admin</string>
     <string name="preference_file" translatable="false">money.mannager</string>
     <string name="user_id_preference" translatable="false">user_id</string>
+    <string name="api_server_error_message">Não foi possivel se conectar ao servidor</string>
+    <string name="api_cred_error">Credenciais inválidas</string>
 </resources>
