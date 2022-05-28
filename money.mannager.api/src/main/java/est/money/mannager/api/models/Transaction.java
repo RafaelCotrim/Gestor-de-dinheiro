@@ -3,6 +3,7 @@ package est.money.mannager.api.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Transaction {
@@ -11,6 +12,9 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private double value;
+
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name="user_id")
@@ -24,8 +28,9 @@ public class Transaction {
 
     public Transaction(){}
 
-    public Transaction(double value, User user, Category category) {
+    public Transaction(double value, Date date, User user, Category category) {
         this.value = value;
+        this.date = date;
         this.user = user;
         this.category = category;
     }
@@ -60,5 +65,13 @@ public class Transaction {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

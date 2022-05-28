@@ -43,4 +43,10 @@ public abstract class BaseService <T, TRepo extends CrudRepository<T, Long>>{
     public boolean exists(long id){
         return repo.existsById(id);
     }
+
+    public void existsOrThrow(long id){
+        if(!exists(id)){
+            throw new ResponseStatusException(NOT_FOUND);
+        }
+    }
 }

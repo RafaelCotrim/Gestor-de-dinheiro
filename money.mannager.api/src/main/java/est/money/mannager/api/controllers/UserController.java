@@ -3,16 +3,23 @@ package est.money.mannager.api.controllers;
 import est.money.mannager.api.dtos.TransactionDto;
 import est.money.mannager.api.models.Budget;
 import est.money.mannager.api.models.Category;
+import est.money.mannager.api.models.Transaction;
 import est.money.mannager.api.models.User;
 import est.money.mannager.api.repositories.BudgetRepository;
 import est.money.mannager.api.services.CategoryService;
 import est.money.mannager.api.services.TransactionService;
 import est.money.mannager.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/users")
@@ -60,9 +67,18 @@ public class UserController {
 
     @GetMapping("/{id}/transactions")
     public List<TransactionDto> findUserTransactions(@PathVariable long id,
-                                                     @RequestParam(name="user-info", required = false) boolean userInfo,
-                                                     @RequestParam(name="category-info", required = false) boolean categoryInfo) {
-        return userService.find(id).getTransactions().stream().map(x -> TransactionDto.from(x, userInfo, categoryInfo)).collect(Collectors.toList());
+                                                     @RequestParam(name="category-info", required = false) boolean categoryInfo,
+                                                     @RequestParam(name="date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+        userService.existsOrThrow(id);
+        List<Transaction> transactions;
+
+        if(date != null){
+            transactions =  transactionService.findByDateAndUserId(date, id);
+        } else {
+            transactions = userService.find(id).getTransactions();
+        }
+
+        return transactions.stream().map(x -> TransactionDto.from(x, false, categoryInfo)).collect(Collectors.toList());
     }
 
     /*

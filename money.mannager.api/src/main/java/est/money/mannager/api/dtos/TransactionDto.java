@@ -2,16 +2,20 @@ package est.money.mannager.api.dtos;
 
 import est.money.mannager.api.models.Transaction;
 
+import java.util.Date;
+
 public class TransactionDto {
 
     public long id;
     public double value;
+    public Date date;
     public ContextInfo user;
     public ContextInfo category;
 
-    public TransactionDto(long id, double value) {
+    public TransactionDto(long id, double value, Date date) {
         this.id = id;
         this.value = value;
+        this.date = date;
     }
 
     public static class ContextInfo{
@@ -27,7 +31,8 @@ public class TransactionDto {
     public static TransactionDto from(Transaction t){
         return new TransactionDto(
                 t.getId(),
-                t.getValue()
+                t.getValue(),
+                t.getDate()
         );
     }
 
