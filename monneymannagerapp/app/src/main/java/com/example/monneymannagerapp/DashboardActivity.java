@@ -10,7 +10,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -28,6 +30,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
     NavigationView navigationView;
+    private SharedPreferences sharedPref;
 
     //variaveis para carregar o fragment principal
     FragmentManager fragmentManager;
@@ -41,7 +44,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.navigationView);
-
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
         //estabelecer evento onClick na navigationView
         navigationView.setNavigationItemSelectedListener(this);
 
