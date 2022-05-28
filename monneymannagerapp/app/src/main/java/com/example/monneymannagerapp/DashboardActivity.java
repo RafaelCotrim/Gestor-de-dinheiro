@@ -22,15 +22,16 @@ import com.example.monneymannagerapp.Fragments.BudgetFragment;
 import com.example.monneymannagerapp.Fragments.MainFragment;
 import com.example.monneymannagerapp.Fragments.ProfileFragment;
 import com.example.monneymannagerapp.Fragments.StatisticFragment;
+import com.example.monneymannagerapp.api.dtos.UserDto;
 import com.google.android.material.navigation.NavigationView;
 
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+    private SharedPreferences sharedPref;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
     NavigationView navigationView;
-    private SharedPreferences sharedPref;
 
     //variaveis para carregar o fragment principal
     FragmentManager fragmentManager;

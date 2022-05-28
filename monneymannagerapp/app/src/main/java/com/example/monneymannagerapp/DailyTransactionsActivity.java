@@ -167,4 +167,9 @@ public class DailyTransactionsActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickAddTransaction(View v){
+        Intent addTransactionActivity = new Intent(this, AddTransactionActivity.class);
+        startActivity(addTransactionActivity);
+    }
+
 }

@@ -18,7 +18,7 @@
         app:layout_constraintTop_toBottomOf="@+id/password_login_input" />
 
     <EditText
-        android:id="@+id/testtt"
+        android:id="@+id/email_login_input"
         android:layout_width="294dp"
         android:layout_height="49dp"
         android:layout_marginBottom="22dp"
@@ -35,14 +35,12 @@
         android:id="@+id/password_login_input"
         android:layout_width="294dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="22dp"
         android:drawableLeft="@drawable/lock"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/submit_login"
         app:layout_constraintStart_toStartOf="@+id/email_login_input"
-        app:layout_constraintTop_toBottomOf="@+id/email_login_input" />
+        tools:layout_editor_absoluteY="424dp" />
 
     <TextView
         android:id="@+id/textView"
