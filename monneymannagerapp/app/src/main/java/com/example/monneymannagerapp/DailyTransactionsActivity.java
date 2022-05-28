@@ -49,7 +49,7 @@ public class DailyTransactionsActivity extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.transactions_list);
         ArrayList<String> transactions = getTransactionsInfo();
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, transactions);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, transactions);
         list.setAdapter(arrayAdapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -110,6 +110,11 @@ public class DailyTransactionsActivity extends AppCompatActivity {
         //TODO Calcular data seguinte e atualizar página com a lista correta
         //TODO newDate = X
         // TODO buildTransactionsList(String X)
+    }
+
+    public void onClickAddTransaction(View v){
+        Intent addTransactionActivity = new Intent(this, AddTransactionActivity.class);
+        startActivity(addTransactionActivity);
     }
 
 }

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -20,10 +21,12 @@ import com.example.monneymannagerapp.Fragments.BudgetFragment;
 import com.example.monneymannagerapp.Fragments.MainFragment;
 import com.example.monneymannagerapp.Fragments.ProfileFragment;
 import com.example.monneymannagerapp.Fragments.StatisticFragment;
+import com.example.monneymannagerapp.api.dtos.UserDto;
 import com.google.android.material.navigation.NavigationView;
 
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+    private SharedPreferences sharedPref;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
