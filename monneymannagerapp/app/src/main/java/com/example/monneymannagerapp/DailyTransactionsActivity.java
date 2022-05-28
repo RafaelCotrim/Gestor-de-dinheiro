@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.monneymannagerapp.api.APIClient;
 import com.example.monneymannagerapp.api.Api;
@@ -78,7 +79,7 @@ public class DailyTransactionsActivity extends AppCompatActivity {
     public void buildTransactionsList(){
 
         ListView list = findViewById(R.id.transactions_list);
-
+        Context c = this;
         api.getUserTransactions(sharedPref.getLong(getString(R.string.user_id_preference), 0), true, formatter.format(date)).enqueue(new Callback<List<TransactionDto>>() {
 
             @Override
@@ -88,6 +89,7 @@ public class DailyTransactionsActivity extends AppCompatActivity {
                     totalAmountReceived.setText("0 €");
                     totalAmountSpent.setText("0 €");
                     totalAmount.setText("0 €");
+                    Toast.makeText(c, "Não foi possível conectar à API", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -111,7 +113,10 @@ public class DailyTransactionsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<TransactionDto>> call, Throwable t) {
-                Log.v("TEST",t.toString());
+                totalAmountReceived.setText("0 €");
+                totalAmountSpent.setText("0 €");
+                totalAmount.setText("0 €");
+                Toast.makeText(c, "Não foi possível conectar à API", Toast.LENGTH_LONG).show();
             }
         });
 
