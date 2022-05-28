@@ -133,6 +133,7 @@ public class DailyTransactionsActivity extends AppCompatActivity {
         intent.putExtras(b);
         finish();
         startActivity(intent);
+        overridePendingTransition(0,0);
     }
 
     public void onClickNextTransactionButton(View v){
@@ -148,6 +149,7 @@ public class DailyTransactionsActivity extends AppCompatActivity {
         intent.putExtras(b);
         finish();
         startActivity(intent);
+        overridePendingTransition(0,0);
     }
 
     private ArrayAdapter<String> getAdapter(ArrayList<String> values){
