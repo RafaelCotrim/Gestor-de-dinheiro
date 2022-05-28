@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Base64;
+import java.util.Date;
 
 @SpringBootApplication
 @RestController
@@ -60,9 +61,9 @@ public class Application {
 
 			Budget b = budgetRepository.save(new Budget(150, u, c));
 
-			transactionRepository.save(new Transaction(100, u, c));
-			transactionRepository.save(new Transaction(100, u, c));
-			transactionRepository.save(new Transaction(100, u, c));
+			transactionRepository.save(new Transaction(100, new Date(), u,  c));
+			transactionRepository.save(new Transaction(100, new Date(), u, c));
+			transactionRepository.save(new Transaction(100, new Date(), u, c));
 		};
 	}
 

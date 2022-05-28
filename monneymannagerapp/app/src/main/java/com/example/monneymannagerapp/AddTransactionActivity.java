@@ -76,7 +76,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         int amount = Integer.parseInt(transactionAmount.getText().toString());
 
         if(amount<0){
-            addCreditTransaction();
+            //addCreditTransaction();
         }
         Intent addTransactionActivity = new Intent(this, AddTransactionActivity.class);
         startActivity(addTransactionActivity);

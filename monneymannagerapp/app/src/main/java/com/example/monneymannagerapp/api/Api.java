@@ -6,6 +6,7 @@ import com.example.monneymannagerapp.api.dtos.UserForLogin;
 import com.example.monneymannagerapp.api.dtos.UserDto;
 import com.example.monneymannagerapp.api.dtos.UserForRegister;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,7 +29,7 @@ public interface Api {
     // User methods
 
     @GET("/users/{id}/transactions")
-    Call<List<TransactionDto>> getUserTransactions(@Path("id") long id);
+    Call<List<TransactionDto>> getUserTransactions(@Path("id") long id, @Query("category-info") Boolean categoryInfo, @Query("date") String date);
 
     @POST("/users/{id}/transactions")
     Call<UserDto> createUserTransaction(@Path("id") long id, @Body TransactionForCreate tfc);

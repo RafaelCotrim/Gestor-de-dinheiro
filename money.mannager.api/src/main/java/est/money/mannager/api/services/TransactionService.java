@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,5 +24,9 @@ public class TransactionService extends BaseService<Transaction, TransactionRepo
                     newValue.setId(id);
                     return repo.save(newValue);
                 });
+    }
+
+    public List<Transaction> findByDateAndUserId(Date date, long userId){
+        return repo.findByDateAndUserId(date, userId);
     }
 }

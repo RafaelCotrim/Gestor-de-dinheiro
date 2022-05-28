@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.navigationView);
-
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
         //estabelecer evento onClick na navigationView
         navigationView.setNavigationItemSelectedListener(this);
 

@@ -9,8 +9,10 @@ import est.money.mannager.api.services.CategoryService;
 import est.money.mannager.api.services.TransactionService;
 import est.money.mannager.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,7 @@ public class TransactionController {
     @GetMapping
     public List<TransactionDto> findAll(@RequestParam(name="user-info", required = false) boolean userInfo,
                                         @RequestParam(name="category-info", required = false) boolean categoryInfo) {
+
         return transactionService.findAll()
                 .stream()
                 .map(x -> TransactionDto.from(x, userInfo, categoryInfo))
@@ -40,7 +43,7 @@ public class TransactionController {
     public TransactionDto save(@RequestBody TransactionForCreate tfc) {
         User u = userService.findOrNull(tfc.userId);
         Category c = categoryService.findOrNull(tfc.categoryId);
-        return TransactionDto.from(transactionService.save(new Transaction(tfc.value, u, c)));
+        return TransactionDto.from(transactionService.save(new Transaction(tfc.value, new Date(), u, c)));
     }
 
     @GetMapping("/{id}")
