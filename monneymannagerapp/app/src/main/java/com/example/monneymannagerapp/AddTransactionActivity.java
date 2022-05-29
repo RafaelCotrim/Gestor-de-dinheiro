@@ -35,6 +35,9 @@ public class AddTransactionActivity extends AppCompatActivity {
 
     private List<CategoryDto> categories = new ArrayList<>();
     private int selectedCategory = -1;
+    private String date;
+
+    public static final String DATE_EXTRA = "DATE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
 
         loadCategories();
+
+        date = getIntent().getExtras().getString(DATE_EXTRA);
     }
 
     public void onClickAddTransaction(View v){
@@ -81,13 +86,15 @@ public class AddTransactionActivity extends AppCompatActivity {
         TransactionForCreate tfc = new TransactionForCreate(
                 amount,
                 sharedPref.getLong(getString(R.string.user_id_preference), 0),
-                getSelectedCategoryId());
+                getSelectedCategoryId(),
+                date);
 
         api.createTransaction(tfc).enqueue(new ApiCallback<>(this, data -> {
             if(data != null){
-                Intent addTransactionActivity = new Intent(c, DailyTransactionsActivity.class);
+                Intent intent = new Intent(c, DailyTransactionsActivity.class);
+                intent.putExtra(DailyTransactionsActivity.DATE_EXTRA, date);
                 finish();
-                startActivity(addTransactionActivity);
+                startActivity(intent);
             }
         }));
     }

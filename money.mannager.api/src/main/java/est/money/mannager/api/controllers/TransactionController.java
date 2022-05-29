@@ -43,7 +43,8 @@ public class TransactionController {
     public TransactionDto save(@RequestBody TransactionForCreate tfc) {
         User u = userService.find(tfc.userId);
         Category c = categoryService.findOrNull(tfc.categoryId);
-        return TransactionDto.from(transactionService.save(new Transaction(tfc.value, new Date(), u, c)));
+        Date d = tfc.date == null ? new Date() : tfc.date;
+        return TransactionDto.from(transactionService.save(new Transaction(tfc.value, d, u, c)));
     }
 
     @GetMapping("/{id}")

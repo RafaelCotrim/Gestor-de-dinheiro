@@ -6,12 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.monneymannagerapp.api.APIClient;
 import com.example.monneymannagerapp.api.Api;
@@ -26,13 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class DailyTransactionsActivity extends AppCompatActivity {
 
-    private static final String DATE_EXTRA = "DATE";
+    public static final String DATE_EXTRA = "DATE";
 
     private TextView totalAmountReceived;
     private TextView totalAmountSpent;
@@ -101,6 +95,7 @@ public class DailyTransactionsActivity extends AppCompatActivity {
 
     public void onClickAddTransaction(View v){
         Intent addTransactionActivity = new Intent(this, AddTransactionActivity.class);
+        addTransactionActivity.putExtra(AddTransactionActivity.DATE_EXTRA, formatter.format(date));
         startActivity(addTransactionActivity);
     }
 
@@ -132,7 +127,6 @@ public class DailyTransactionsActivity extends AppCompatActivity {
                     }
                     writeData();
                 }));
-
     }
 
     private void writeData(){
