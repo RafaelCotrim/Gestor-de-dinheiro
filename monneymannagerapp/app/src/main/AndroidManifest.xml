@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Monneymannagerapp">
         <activity
+            android:name=".StatisticsActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddTransactionActivity"
             android:exported="false" />
         <activity

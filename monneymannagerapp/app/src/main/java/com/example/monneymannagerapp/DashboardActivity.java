@@ -76,8 +76,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             //carregar fragment das estatisticas
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container, new StatisticFragment());
-            fragmentTransaction.commit();
+            Intent statisticsActivity = new Intent(this, StatisticsActivity.class);
+            startActivity(statisticsActivity);
         }
 
         if(menuItem.getItemId() == R.id.budgets){
