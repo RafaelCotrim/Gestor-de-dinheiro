@@ -1,5 +1,6 @@
 package est.money.mannager.api.controllers;
 
+import est.money.mannager.api.dtos.CategoryDto;
 import est.money.mannager.api.dtos.TransactionDto;
 import est.money.mannager.api.models.Budget;
 import est.money.mannager.api.models.Category;
@@ -93,8 +94,8 @@ public class UserController {
 
 
     @GetMapping("/{id}/categories")
-    public List<Category> findUserCategories(@PathVariable long id) {
-        return userService.find(id).getCategories();
+    public List<CategoryDto> findUserCategories(@PathVariable long id) {
+        return userService.find(id).getCategories().stream().map(CategoryDto::from).collect(Collectors.toList());
     }
 
     /*

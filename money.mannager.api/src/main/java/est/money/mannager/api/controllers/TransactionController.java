@@ -41,7 +41,7 @@ public class TransactionController {
 
     @PostMapping
     public TransactionDto save(@RequestBody TransactionForCreate tfc) {
-        User u = userService.findOrNull(tfc.userId);
+        User u = userService.find(tfc.userId);
         Category c = categoryService.findOrNull(tfc.categoryId);
         return TransactionDto.from(transactionService.save(new Transaction(tfc.value, new Date(), u, c)));
     }

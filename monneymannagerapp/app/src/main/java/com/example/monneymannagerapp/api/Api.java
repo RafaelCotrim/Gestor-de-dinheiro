@@ -1,5 +1,7 @@
 package com.example.monneymannagerapp.api;
 
+import com.example.monneymannagerapp.api.dtos.CategoryDto;
+import com.example.monneymannagerapp.api.dtos.CategoryForCreate;
 import com.example.monneymannagerapp.api.dtos.TransactionDto;
 import com.example.monneymannagerapp.api.dtos.TransactionForCreate;
 import com.example.monneymannagerapp.api.dtos.UserForLogin;
@@ -31,8 +33,8 @@ public interface Api {
     @GET("/users/{id}/transactions")
     Call<List<TransactionDto>> getUserTransactions(@Path("id") long id, @Query("category-info") Boolean categoryInfo, @Query("date") String date);
 
-    @POST("/users/{id}/transactions")
-    Call<UserDto> createUserTransaction(@Path("id") long id, @Body TransactionForCreate tfc);
+    @GET("/users/{id}/categories")
+    Call<List<CategoryDto>> getUserCategories(@Path("id") long id);
 
     // Transaction methods
 
@@ -40,5 +42,10 @@ public interface Api {
     Call<List<TransactionDto>> getTransactions(@Query("user-info") Boolean userInfo, @Query("category-info") Boolean categoryInfo);
 
     @POST("/transactions")
-    Call<List<TransactionDto>> createTransaction();
+    Call<TransactionDto> createTransaction(@Body TransactionForCreate tfc);
+
+    // Categories
+
+    @POST("/categories")
+    Call<CategoryDto> createCategory(@Body CategoryForCreate cfc);
 }
