@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.example.monneymannagerapp.api.APIClient;
 import com.example.monneymannagerapp.api.Api;
+import com.example.monneymannagerapp.api.ApiCallback;
 import com.example.monneymannagerapp.api.dtos.TransactionDto;
 import com.example.monneymannagerapp.api.dtos.UserDto;
 import com.example.monneymannagerapp.api.dtos.UserForLogin;
@@ -35,20 +36,14 @@ public class MainActivity extends AppCompatActivity {
         api = APIClient.getApi();
         sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
 
-        api.getTransactions(true, true).enqueue(new Callback<List<TransactionDto>>() {
-
-            @Override
-            public void onResponse(Call<List<TransactionDto>> call, Response<List<TransactionDto>> response) {
-                for (TransactionDto t: response.body()) {
-                    Log.v("TEST", "" + t.id);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<TransactionDto>> call, Throwable t) {
-                Log.v("TEST", t.toString());
-            }
-        });
+        api.getTransactions(true, true)
+                .enqueue(new ApiCallback<>(this, data -> {
+                    if(data != null){
+                        for (TransactionDto t: data) {
+                            Log.v("TEST", "" + t.id);
+                        }
+                    }
+                }));
 
         checkLogin();
     }

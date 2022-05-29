@@ -2,6 +2,7 @@ package est.money.mannager.api.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,11 +13,14 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotNull
     private String name;
 
     @ManyToOne
     @JoinColumn(name="user_id")
     @JsonBackReference("user_category")
+    @NotNull
     private User user;
 
     @OneToMany(mappedBy = "category")

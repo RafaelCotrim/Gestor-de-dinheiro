@@ -1,6 +1,7 @@
 package est.money.mannager.api.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,11 +14,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
     private String name;
+
+    @NotNull
     private String email;
     private boolean isAdmin;
 
+    @NotNull
     private byte[] salt;
+    @NotNull
     private byte[] hashPass;
 
     @OneToMany(mappedBy="user")

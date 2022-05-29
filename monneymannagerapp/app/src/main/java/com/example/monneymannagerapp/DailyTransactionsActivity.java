@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.monneymannagerapp.api.APIClient;
 import com.example.monneymannagerapp.api.Api;
+import com.example.monneymannagerapp.api.ApiCallback;
 import com.example.monneymannagerapp.api.dtos.TransactionDto;
 
 import java.text.ParseException;
@@ -122,28 +123,15 @@ public class DailyTransactionsActivity extends AppCompatActivity {
     }
 
     private void loadData(){
-        Context c = this;
-        api.getUserTransactions(sharedPref.getLong(getString(R.string.user_id_preference), 0), true, formatter.format(date)).enqueue(new Callback<List<TransactionDto>>() {
-
-            @Override
-            public void onResponse(Call<List<TransactionDto>> call, Response<List<TransactionDto>> response) {
-
-                if (response.body() == null) {
-                    transactions = new ArrayList<>();
-                } else {
-                    transactions = response.body();
-                }
-                writeData();
-            }
-
-            @Override
-            public void onFailure(Call<List<TransactionDto>> call, Throwable t) {
-                transactions = new ArrayList<>();
-                Toast.makeText(c, "Não foi possível conectar à API", Toast.LENGTH_LONG).show();
-                writeData();
-            }
-        });
-
+        api.getUserTransactions(sharedPref.getLong(getString(R.string.user_id_preference), 0), true, formatter.format(date))
+                .enqueue(new ApiCallback<>(this, data -> {
+                    if (data == null) {
+                        transactions = new ArrayList<>();
+                    } else {
+                        transactions = data;
+                    }
+                    writeData();
+                }));
 
     }
 
