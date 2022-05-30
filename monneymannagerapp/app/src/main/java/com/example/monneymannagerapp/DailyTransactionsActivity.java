@@ -36,7 +36,7 @@ public class DailyTransactionsActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPref;
     private Api api;
-    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
     private ArrayAdapter<String> adapter;
 
     private List<TransactionDto> transactions = new ArrayList<>();
@@ -154,8 +154,8 @@ public class DailyTransactionsActivity extends AppCompatActivity {
     }
 
     private void checkLogin(){
-        if(sharedPref.getLong(getString(R.string.user_id_preference), 0) == 0){
-            startActivity(new Intent(this, MainActivity.class));
-        }
+//        if(sharedPref.getLong(getString(R.string.user_id_preference), 0) == 0){
+//            startActivity(new Intent(this, MainActivity.class));
+//        }
     }
 }
