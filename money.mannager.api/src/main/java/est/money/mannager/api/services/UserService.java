@@ -1,8 +1,11 @@
 package est.money.mannager.api.services;
 
+import est.money.mannager.api.dtos.StatisticsDto;
 import est.money.mannager.api.models.User;
 import est.money.mannager.api.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service

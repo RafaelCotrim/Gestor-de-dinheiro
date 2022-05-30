@@ -181,11 +181,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gasto por categoria (em percentagem):"
-                android:textSize="23sp"
-                android:textStyle="bold"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:text="Gasto por categoria:"
+                android:textSize="23sp"
+                android:textStyle="bold" />
 
             <!--View to display the line-->
             <View

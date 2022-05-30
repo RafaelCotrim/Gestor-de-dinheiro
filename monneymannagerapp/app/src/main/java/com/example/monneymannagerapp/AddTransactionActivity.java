@@ -46,10 +46,9 @@ public class AddTransactionActivity extends AppCompatActivity {
         ListView categoryList = findViewById(R.id.categories_list);
         newCategoryName = findViewById(R.id.new_category_input);
         transactionAmount = findViewById(R.id.transaction_amount_input);
-        RadioButton creditButton = findViewById(R.id.credit_option_button);
         debitButton = findViewById(R.id.debit_option_button);
 
-        creditButton.setChecked(true);
+        debitButton.setChecked(true);
         categoryList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice);
         categoryList.setAdapter(categoryAdapter);

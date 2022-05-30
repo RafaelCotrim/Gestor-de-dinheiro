@@ -58,12 +58,13 @@ public class Application {
 					false));
 
 			Category c =  categoryRepository.save(new Category("Comida", u));
+			Category c2 =  categoryRepository.save(new Category("Aluguel", u));
 
 			Budget b = budgetRepository.save(new Budget(150, u, c));
 
-			transactionRepository.save(new Transaction(100, new Date(), u,  c));
-			transactionRepository.save(new Transaction(100, new Date(), u, c));
-			transactionRepository.save(new Transaction(100, new Date(), u, c));
+			transactionRepository.save(new Transaction(-100, new Date(), u,  c));
+			transactionRepository.save(new Transaction(-90, new Date(), u, c));
+			transactionRepository.save(new Transaction(-80, new Date(), u, c2));
 		};
 	}
 
