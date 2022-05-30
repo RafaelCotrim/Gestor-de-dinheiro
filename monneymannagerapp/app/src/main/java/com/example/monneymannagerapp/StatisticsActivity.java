@@ -2,88 +2,124 @@ package com.example.monneymannagerapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.monneymannagerapp.api.APIClient;
+import com.example.monneymannagerapp.api.Api;
+import com.example.monneymannagerapp.api.ApiCallback;
+import com.example.monneymannagerapp.api.dtos.StatisticsDto;
+
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class StatisticsActivity extends AppCompatActivity {
 
-    TextView option1, option2, option3, option4;
-    TextView display1, display2, display3, display4;
-    TextView value1, value2, value3, value4;
     PieChart pieChart;
+
+    List<TextView> values;
+    List<TextView> displays;
+    List<TextView> options;
+    List<String> colors;
+
+    private Api api;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
-        // Link those objects with their respective
-        // id's that we have given in .XML file
-        value1 = findViewById(R.id.value1);
-        value2 = findViewById(R.id.value2);
-        value3 = findViewById(R.id.value3);
-        value4 = findViewById(R.id.value4);
-        option1 = findViewById(R.id.option1);
-        option2 = findViewById(R.id.option2);
-        option3 = findViewById(R.id.option3);
-        option4 = findViewById(R.id.option4);
-        display1 = findViewById(R.id.display1);
-        display2 = findViewById(R.id.display2);
-        display3 = findViewById(R.id.display3);
-        display4 = findViewById(R.id.display4);
+        api = APIClient.getApi();
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
+
+        colors = new ArrayList<>();
+
+        colors.add("#FFA726");
+        colors.add("#66BB6A");
+        colors.add("#EF5350");
+        colors.add("#29B6F6");
+
+        values = new ArrayList<>();
+        values.add(findViewById(R.id.value1));
+        values.add(findViewById(R.id.value2));
+        values.add(findViewById(R.id.value3));
+        values.add(findViewById(R.id.value4));
+
+        displays = new ArrayList<>();
+        displays.add(findViewById(R.id.display1));
+        displays.add(findViewById(R.id.display2));
+        displays.add(findViewById(R.id.display3));
+        displays.add(findViewById(R.id.display4));
+
+        options = new ArrayList<>();
+        options.add(findViewById(R.id.option1));
+        options.add(findViewById(R.id.option2));
+        options.add(findViewById(R.id.option3));
+        options.add(findViewById(R.id.option4));
+
         pieChart = findViewById(R.id.piechart);
-         setData();
+        loadData();
     }
 
-    private void setData(){
-        //TODO - Verificar quais as 3 categorias com mais gastos e guardar o nome e gasto total por cada
-        //TODO - Somar os gastos das restantes categorias
-        //TODO - option 1, 2, 3 correspondem as categorias com mais gastos por ordem
-        //TODO - (tal como display e value do num correspondente)
-        //
-        //set name category
-        option1.setText("Categoria 1");
-        display1.setText("Categoria 1");
-        option2.setText("Categoria 2");
-        display2.setText("Categoria 2");
-        option3.setText("Categoria 3");
-        display3.setText("Categoria 3");
-        option4.setText("Outros");
-        display4.setText("Outros");
+    private void loadData(){
+        api.getUserStatistics(sharedPref.getLong(getString(R.string.user_id_preference), 0))
+                .enqueue(new ApiCallback<>(this, data -> {
+                    if(data == null || data.size() == 0){
+                        data = new ArrayList<>();
+                    }
 
-        // Set the percentage of language used
-        value1.setText(Integer.toString(40));
-        value2.setText(Integer.toString(30));
-        value3.setText(Integer.toString(25));
-        value4.setText(Integer.toString(4));
-        // Set the data and color to the pie chart
-        pieChart.addPieSlice(
-                new PieModel(
-                        "R",
-                        Integer.parseInt(value1.getText().toString()),
-                        Color.parseColor("#FFA726")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "Python",
-                        Integer.parseInt(value2.getText().toString()),
-                        Color.parseColor("#66BB6A")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "C++",
-                        Integer.parseInt(value3.getText().toString()),
-                        Color.parseColor("#EF5350")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "Java",
-                        Integer.parseInt(value4.getText().toString()),
-                        Color.parseColor("#29B6F6")));
+                    while (data.size() < 4){
+                        data.add(new StatisticsDto());
+                    }
 
-        // To animate the pie chart
-        pieChart.startAnimation();
+                    double total = 0;
 
+                    for (StatisticsDto s: data) {
+                        total += s.value;
+                    }
+                    double otherTotal = 0;
+
+                    for (int i = 0; i < data.size(); i++) {
+                        if(i < 3){
+                            options.get(i).setText(data.get(i).name);
+                            displays.get(i).setText(data.get(i).name);
+                            values.get(i).setText(String.format(Locale.US, "%.1f %%", (data.get(i).value * 100) / total));
+                            pieChart.addPieSlice(
+                                    new PieModel(data.get(i).name,
+                                            (float) data.get(i).value,
+                                            Color.parseColor(colors.get(i))
+                                    )
+                            );
+                        } else {
+                            otherTotal += data.get(i).value;
+                        }
+                    }
+
+                    if(otherTotal > 0){
+                        options.get(3).setText("Outros");
+                        displays.get(3).setText("Outros");
+                        values.get(3).setText(String.format(Locale.US,"%.1f %%", (otherTotal * 100) / total));
+                        pieChart.addPieSlice(
+                                new PieModel("Outros",
+                                        (float) otherTotal,
+                                        Color.parseColor(colors.get(3))
+                                )
+                        );
+                    } else {
+                        options.get(3).setText("-");
+                        displays.get(3).setText("-");
+                        values.get(3).setText(String.format(Locale.US,"%.1f %%", 0.0));
+                    }
+
+                    pieChart.startAnimation();
+                }));
     }
 }

@@ -1,9 +1,9 @@
 package est.money.mannager.api.controllers;
 
 import est.money.mannager.api.dtos.CategoryDto;
+import est.money.mannager.api.dtos.StatisticsDto;
 import est.money.mannager.api.dtos.TransactionDto;
 import est.money.mannager.api.models.Budget;
-import est.money.mannager.api.models.Category;
 import est.money.mannager.api.models.Transaction;
 import est.money.mannager.api.models.User;
 import est.money.mannager.api.repositories.BudgetRepository;
@@ -13,14 +13,11 @@ import est.money.mannager.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/users")
@@ -96,6 +93,22 @@ public class UserController {
     @GetMapping("/{id}/categories")
     public List<CategoryDto> findUserCategories(@PathVariable long id) {
         return userService.find(id).getCategories().stream().map(CategoryDto::from).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}/statistics")
+    public List<StatisticsDto> findUserStatistics(@PathVariable long id) {
+        return userService.find(id)
+                .getTransactions()
+                .stream()
+                .filter(t -> t.getValue() < 0)
+                .collect(Collectors.groupingBy(t -> t.getCategory().getName()))
+                .entrySet()
+                .stream()
+                .map(e -> new StatisticsDto(
+                         e.getKey(),
+                         e.getValue().stream().map(t -> t.getValue() * -1).reduce(0.0, Double::sum)))
+                .sorted(Comparator.comparingDouble(StatisticsDto::getValue).reversed())
+                .toList();
     }
 
     /*

@@ -2,6 +2,7 @@ package com.example.monneymannagerapp.api;
 
 import com.example.monneymannagerapp.api.dtos.CategoryDto;
 import com.example.monneymannagerapp.api.dtos.CategoryForCreate;
+import com.example.monneymannagerapp.api.dtos.StatisticsDto;
 import com.example.monneymannagerapp.api.dtos.TransactionDto;
 import com.example.monneymannagerapp.api.dtos.TransactionForCreate;
 import com.example.monneymannagerapp.api.dtos.UserForLogin;
@@ -35,6 +36,9 @@ public interface Api {
 
     @GET("/users/{id}/categories")
     Call<List<CategoryDto>> getUserCategories(@Path("id") long id);
+
+    @GET("/users/{id}/statistics")
+    Call<List<StatisticsDto>> getUserStatistics(@Path("id") long id);
 
     // Transaction methods
 
