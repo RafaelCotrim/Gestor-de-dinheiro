@@ -8,6 +8,7 @@ import com.example.monneymannagerapp.api.dtos.TransactionForCreate;
 import com.example.monneymannagerapp.api.dtos.UserForLogin;
 import com.example.monneymannagerapp.api.dtos.UserDto;
 import com.example.monneymannagerapp.api.dtos.UserForRegister;
+import com.example.monneymannagerapp.api.dtos.UserForUpdate;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -30,6 +32,9 @@ public interface Api {
     Call<UserDto> register(@Body UserForRegister ufr);
 
     // User methods
+
+    @PUT("/users/{id}")
+    Call<UserDto> updateUser(@Path("id") long id, @Body UserForUpdate ufu);
 
     @GET("/users/{id}/transactions")
     Call<List<TransactionDto>> getUserTransactions(@Path("id") long id, @Query("category-info") Boolean categoryInfo, @Query("date") String date);

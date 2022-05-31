@@ -1,8 +1,6 @@
 package est.money.mannager.api.controllers;
 
-import est.money.mannager.api.dtos.CategoryDto;
-import est.money.mannager.api.dtos.StatisticsDto;
-import est.money.mannager.api.dtos.TransactionDto;
+import est.money.mannager.api.dtos.*;
 import est.money.mannager.api.models.Budget;
 import est.money.mannager.api.models.Transaction;
 import est.money.mannager.api.models.User;
@@ -36,26 +34,18 @@ public class UserController {
     private BudgetRepository budgetRepository;
 
     @GetMapping
-    public List<User> findAll() {
-        return userService.findAll();
+    public List<UserDTO> findAll() {
+        return userService.findAll().stream().map(UserDTO::from).collect(Collectors.toList());
     }
-
-    /*
-    @PostMapping
-    public User save(@RequestBody User user) {
-        return userService.save(user);
-    }
-    */
 
     @GetMapping("/{id}")
-    public User findUser(@PathVariable long id) {
-        return userService.find(id);
+    public UserDTO findUser(@PathVariable long id) {
+        return UserDTO.from(userService.find(id));
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@RequestBody User newUser, @PathVariable Long id) {
-
-        return userService.update(id, newUser);
+    public UserDTO updateUser(@RequestBody UserForUpdate userForUpdate, @PathVariable Long id) {
+        return UserDTO.from(userService.update(id, userForUpdate));
     }
 
     @DeleteMapping("/{id}")
@@ -79,17 +69,6 @@ public class UserController {
         return transactions.stream().map(x -> TransactionDto.from(x, false, categoryInfo)).collect(Collectors.toList());
     }
 
-    /*
-    @PostMapping("/{id}/transactions")
-    public TransactionDto addTransactionToUser(@PathVariable Long id, @RequestBody TransactionForCreate tfuc){
-        User u = userService.find(id);
-        Category c = categoryService.find(tfuc.categoryId);
-        Transaction t = new Transaction(tfuc.value, u, c);
-        return TransactionDto.from(transactionService.save(t));
-    }
-    */
-
-
     @GetMapping("/{id}/categories")
     public List<CategoryDto> findUserCategories(@PathVariable long id) {
         return userService.find(id).getCategories().stream().map(CategoryDto::from).collect(Collectors.toList());
@@ -100,7 +79,7 @@ public class UserController {
         return userService.find(id)
                 .getTransactions()
                 .stream()
-                .filter(t -> t.getValue() < 0)
+                .filter(t -> t.getValue() < 0 && t.getCategory() != null)
                 .collect(Collectors.groupingBy(t -> t.getCategory().getName()))
                 .entrySet()
                 .stream()
@@ -111,26 +90,9 @@ public class UserController {
                 .toList();
     }
 
-    /*
-    @PostMapping("/{id}/categories")
-    public Category addCategoryToUser(@PathVariable Long id, @RequestBody Category newCategory){
-        User u = userService.find(id);
-        newCategory.setUser(u);
-        return categoryService.save(newCategory);
-    }
-    */
-
     @GetMapping("/{id}/budgets")
     public List<Budget> getUserBudgets(@PathVariable long id) {
         return userService.find(id).getBudgets();
     }
 
-    /*
-    @PostMapping("/{id}/budgets")
-    public Budget addBudgetToUser(@PathVariable Long id, @RequestBody Budget newBudget){
-        User u = userService.find(id);
-        newBudget.setUser(u);
-        return budgetRepository.save(newBudget);
-    }
-    */
 }

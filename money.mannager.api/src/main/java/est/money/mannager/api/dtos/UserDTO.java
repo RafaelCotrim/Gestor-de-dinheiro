@@ -1,5 +1,7 @@
 package est.money.mannager.api.dtos;
 
+import est.money.mannager.api.models.User;
+
 public class UserDTO {
     private long id;
     private String name;
@@ -45,5 +47,9 @@ public class UserDTO {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public static UserDTO from(User u ){
+        return new UserDTO(u.getId(), u.getName(), u.getEmail(), u.isAdmin());
     }
 }

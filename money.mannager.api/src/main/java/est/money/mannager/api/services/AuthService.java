@@ -62,7 +62,7 @@ public class AuthService {
         return new UserDTO(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), u.isAdmin());
     }
 
-    private byte[] hash(String password, byte[] salt){
+    public byte[] hash(String password, byte[] salt){
 
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
 
