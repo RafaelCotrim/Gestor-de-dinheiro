@@ -2,6 +2,7 @@ package est.money.mannager.api.controllers;
 
 import est.money.mannager.api.dtos.TransactionDto;
 import est.money.mannager.api.dtos.TransactionForCreate;
+import est.money.mannager.api.dtos.TransactionForUpdate;
 import est.money.mannager.api.models.Category;
 import est.money.mannager.api.models.Transaction;
 import est.money.mannager.api.models.User;
@@ -55,7 +56,7 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public TransactionDto update(@PathVariable Long id, @RequestBody Transaction newValue) {
+    public TransactionDto update(@PathVariable Long id, @RequestBody TransactionForUpdate newValue) {
         return TransactionDto.from(transactionService.update(id, newValue));
     }
 

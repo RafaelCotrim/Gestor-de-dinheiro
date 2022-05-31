@@ -59,6 +59,9 @@ public class DailyTransactionsActivity extends AppCompatActivity {
         transaction_list.setAdapter(adapter);
         transaction_list.setOnItemClickListener((adapterView, view, position, id) -> {
             //Toast.makeText(getApplicationContext(), "Selected item" + transactions.get(position).toString(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, TransactionActivity.class);
+            intent.putExtra(TransactionActivity.ID_EXTRA, transactions.get(position).id);
+            startActivity(intent);
         });
 
         api = APIClient.getApi();

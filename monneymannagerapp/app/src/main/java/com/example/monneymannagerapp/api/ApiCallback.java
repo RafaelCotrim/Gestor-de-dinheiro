@@ -24,16 +24,16 @@ public class ApiCallback<T> implements Callback<T> {
 
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-        Log.v(TAG, String.format("API call to %s (Data=%b)", call.request().url().url(), response.body() != null));
+        Log.v(TAG, String.format("%s %s (Sucess=%b)", call.request().method(), call.request().url().url(), response.isSuccessful()));
         responseHandler.method(response.body());
-        if(response.body() == null){
+        if(!response.isSuccessful()){
             Toast.makeText(context, "Não foi possível executar a operação", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
-        Log.w(TAG, String.format("Failed API call to %s (%s)", call.request().url().url(), t));
+        Log.v(TAG, String.format("%s %s (Error)", call.request().method(), call.request().url().url()));
         responseHandler.method(null);
         Toast.makeText(context, "Não foi possível executar a operação", Toast.LENGTH_LONG).show();
     }

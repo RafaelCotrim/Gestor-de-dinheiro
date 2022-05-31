@@ -1,23 +1,25 @@
 package com.example.monneymannagerapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.monneymannagerapp.api.APIClient;
 import com.example.monneymannagerapp.api.Api;
 import com.example.monneymannagerapp.api.ApiCallback;
 import com.example.monneymannagerapp.api.dtos.CategoryDto;
 import com.example.monneymannagerapp.api.dtos.CategoryForCreate;
+import com.example.monneymannagerapp.api.dtos.TransactionForUpdate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class TransactionActivity extends AppCompatActivity {
     private TextView newCategoryName;
 
     private ArrayAdapter<String> categoryAdapter;
+    ListView categoryList;
     private SharedPreferences sharedPref;
     private Api api;
 
@@ -40,14 +43,19 @@ public class TransactionActivity extends AppCompatActivity {
     private Button dateButton;
     private RadioButton debitButton, creditButton;
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
-    Date date;
 
+    private Long id;
+
+    public static final String ID_EXTRA = "TRANSACTION_ID";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
 
-        ListView categoryList = findViewById(R.id.categories_list_view);
+        api = APIClient.getApi();
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
+
+        categoryList = findViewById(R.id.categories_list_view);
         newCategoryName = findViewById(R.id.add_category);
         transactionAmount = findViewById(R.id.amount_input);
         creditButton = findViewById(R.id.credit_option);
@@ -55,17 +63,49 @@ public class TransactionActivity extends AppCompatActivity {
 
         initDatePicker();
         dateButton = findViewById(R.id.date_picker_button);
-        dateButton.setText(getTodaysDate());
+        dateButton.setText(formatter.format(new Date()));
+
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice);
+        categoryList.setAdapter(categoryAdapter);
+        categoryList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         loadCategories();
+
+        parseId();
+        loadData();
     }
 
-    private String getTodaysDate(){
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return makeDateString(day, month, year);
+    private void parseId(){
+        id = getIntent().getExtras().getLong(ID_EXTRA);
+    }
+
+    protected void loadData(){
+        api.getTransactionById(id, false, true)
+                .enqueue(new ApiCallback<>(this, data -> {
+                    if(data == null){
+                        return;
+                    }
+                    transactionAmount.setText(String.format("%s", Math.abs(data.value)));
+                    if(data.value >= 0){
+                        creditButton.setChecked(true);
+                    } else {
+                        debitButton.setChecked(true);
+                    }
+
+                    dateButton.setText(formatter.format(data.date));
+
+                    if(data.category == null){
+                        return;
+                    }
+
+                    for (int i = 0; i < categories.size(); i++) {
+                        CategoryDto c = categories.get(i);
+
+                        if(c.id == data.category.id){
+                            categoryList.setItemChecked(i, true);
+                        }
+                    }
+                }));
     }
 
     public void onAddCategory(View v){
@@ -90,7 +130,6 @@ public class TransactionActivity extends AppCompatActivity {
                 }));
     }
 
-
     private void writeCategories(){
         categoryAdapter.clear();
 
@@ -101,27 +140,40 @@ public class TransactionActivity extends AppCompatActivity {
     }
 
     public void updateTransaction(View v){
-        //TODO
-        //TODO
-        //TODO
+        double value = Double.parseDouble(transactionAmount.getText().toString());
+        String date = dateButton.getText().toString();
+
+        if(debitButton.isChecked()){
+            value *= -1;
+        }
+
+        int pos = categoryList.getCheckedItemPosition();
+
+        long categoryId = 0;
+
+        if(pos != -1){
+            categoryId = categories.get(pos).id;
+        }
+
+        TransactionForUpdate tfu = new TransactionForUpdate(value, date, categoryId, sharedPref.getLong(getString(R.string.user_id_preference), 0));
+        api.updateTransaction(id, tfu).enqueue(new ApiCallback<>(this, data ->{
+            if(data == null){
+                return;
+            }
+
+            finish();
+        }));
     }
 
     public void removeTransaction(View v){
-        //TODO
-        //TODO
-        //TODO
+        api.deleteTransaction(id).enqueue(new ApiCallback<>(this, data -> finish()));
     }
 
     private void initDatePicker()
     {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day)
-            {
-                String date = makeDateString(day, month, year);
-                dateButton.setText(date);
-            }
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            String date = makeDateString(day, month, year);
+            dateButton.setText(date);
         };
 
         Calendar cal = Calendar.getInstance();
@@ -149,11 +201,8 @@ public class TransactionActivity extends AppCompatActivity {
         calendar.set(Calendar.DAY_OF_MONTH, day);
         calendar.set(Calendar.YEAR, year);
 
-        date = calendar.getTime();
-        String dateFormat = formatter.format(date);
-        return dateFormat;
+        return formatter.format(calendar.getTime());
     }
-
 
     public void openDatePicker(View v){
         datePickerDialog.show();

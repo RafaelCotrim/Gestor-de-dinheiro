@@ -5,6 +5,7 @@ import com.example.monneymannagerapp.api.dtos.CategoryForCreate;
 import com.example.monneymannagerapp.api.dtos.StatisticsDto;
 import com.example.monneymannagerapp.api.dtos.TransactionDto;
 import com.example.monneymannagerapp.api.dtos.TransactionForCreate;
+import com.example.monneymannagerapp.api.dtos.TransactionForUpdate;
 import com.example.monneymannagerapp.api.dtos.UserForLogin;
 import com.example.monneymannagerapp.api.dtos.UserDto;
 import com.example.monneymannagerapp.api.dtos.UserForRegister;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -52,6 +54,15 @@ public interface Api {
 
     @POST("/transactions")
     Call<TransactionDto> createTransaction(@Body TransactionForCreate tfc);
+
+    @GET("/transactions/{id}")
+    Call<TransactionDto> getTransactionById(@Path("id") long id, @Query("user-info") Boolean userInfo, @Query("category-info") Boolean categoryInfo);
+
+    @DELETE("/transactions/{id}")
+    Call<Void> deleteTransaction(@Path("id") long id);
+
+    @PUT("/transactions/{id}")
+    Call<TransactionDto> updateTransaction(@Path("id") long id, @Body TransactionForUpdate tfu);
 
     // Categories
 
