@@ -169,7 +169,7 @@ public class AddTransactionActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day)
             {
-                String date = makeDateString(day, month, year);
+                date = makeDateString(day, month, year);
                 dateButton.setText(date);
             }
         };
