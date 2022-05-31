@@ -24,6 +24,7 @@ import com.example.monneymannagerapp.api.dtos.CategoryDto;
 import com.example.monneymannagerapp.api.dtos.CategoryForCreate;
 import com.example.monneymannagerapp.api.dtos.TransactionForCreate;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,6 +56,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_transaction);
 
+        date = getIntent().getExtras().getString(DATE_EXTRA);
+
         ListView categoryList = findViewById(R.id.categories_list);
         newCategoryName = findViewById(R.id.new_category_input);
         transactionAmount = findViewById(R.id.transaction_amount_input);
@@ -71,11 +74,12 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         initDatePicker();
         dateButton = findViewById(R.id.date_picker_button_add_transaction);
-        dateButton.setText(getTodaysDate());
+
 
         loadCategories();
 
-        date = getIntent().getExtras().getString(DATE_EXTRA);
+
+        dateButton.setText(date);
     }
 
     public void onClickAddTransaction(View v){
@@ -175,6 +179,15 @@ public class AddTransactionActivity extends AppCompatActivity {
         };
 
         Calendar cal = Calendar.getInstance();
+        Date ldate = new Date();
+        try {
+            ldate = formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        cal.setTime(ldate);
+
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
