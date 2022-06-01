@@ -36,6 +36,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     //variaveis para carregar o fragment principal
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    String userType = "Admin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         navigationView = findViewById(R.id.navigationView);
         sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
         //estabelecer evento onClick na navigationView
+        if(userType.equals("Admin")){
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.drawer_menu_admin);
+        }
         navigationView.setNavigationItemSelectedListener(this);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open,R.string.close);
@@ -64,6 +69,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         drawerLayout.closeDrawer(GravityCompat.START);
+        if(userType.equals("Admin") && menuItem.getItemId() == R.id.management){
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            Intent userActivity = new Intent(this, UserManagementActivity.class);
+            startActivity(userActivity);
+        }
         if(menuItem.getItemId() == R.id.dashboard){
             //carregar fragment principal
             fragmentManager = getSupportFragmentManager();

@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Monneymannagerapp">
         <activity
+            android:name=".AddUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserManagementActivity"
+            android:exported="false" />
+        <activity
             android:name=".BudgetManageActivity"
             android:exported="false" />
         <activity
