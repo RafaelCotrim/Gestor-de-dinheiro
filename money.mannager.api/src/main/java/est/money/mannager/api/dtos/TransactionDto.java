@@ -18,16 +18,6 @@ public class TransactionDto {
         this.date = date;
     }
 
-    public static class ContextInfo{
-        public long id;
-        public String name;
-
-        public ContextInfo(long id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-    }
-
     public static TransactionDto from(Transaction t){
         return new TransactionDto(
                 t.getId(),
@@ -39,11 +29,11 @@ public class TransactionDto {
     public static TransactionDto from(Transaction t, boolean includeUserInfo, boolean includeCategoryInfo){
         TransactionDto tdto = TransactionDto.from(t);
         if(includeUserInfo && t.getUser() != null){
-            tdto.user = new TransactionDto.ContextInfo(t.getUser().getId(), t.getUser().getName());
+            tdto.user = new ContextInfo(t.getUser().getId(), t.getUser().getName());
         }
 
         if(includeCategoryInfo && t.getCategory() != null){
-            tdto.category = new TransactionDto.ContextInfo(t.getCategory().getId(), t.getCategory().getName());
+            tdto.category = new ContextInfo(t.getCategory().getId(), t.getCategory().getName());
         }
         return tdto;
     }

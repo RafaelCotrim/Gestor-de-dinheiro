@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 
 @SpringBootApplication
@@ -61,9 +62,14 @@ public class Application {
 			Category c2 =  categoryRepository.save(new Category("Aluguel", u));
 
 			Budget b = budgetRepository.save(new Budget(150, u, c));
+			//Budget b2 = budgetRepository.save(new Budget(80, u, c2));
 
-			transactionRepository.save(new Transaction(-100, new Date(), u,  c));
-			transactionRepository.save(new Transaction(-90, new Date(), u, c));
+			Calendar cal = Calendar.getInstance();
+
+			cal.add(Calendar.MONTH, -1);
+
+			transactionRepository.save(new Transaction(-100, cal.getTime(), u,  c));
+			transactionRepository.save(new Transaction(-90, new Date(), u, c2));
 			transactionRepository.save(new Transaction(-80, new Date(), u, c2));
 		};
 	}

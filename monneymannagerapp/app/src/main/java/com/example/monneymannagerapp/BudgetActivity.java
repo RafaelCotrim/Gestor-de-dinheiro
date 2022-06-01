@@ -7,71 +7,123 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.monneymannagerapp.api.APIClient;
+import com.example.monneymannagerapp.api.Api;
+import com.example.monneymannagerapp.api.ApiCallback;
+import com.example.monneymannagerapp.api.dtos.BudgetDto;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class BudgetActivity extends AppCompatActivity {
 
-    private TextView dateView;
-    ListView listView;
-    String category_array[] = {"Categoria 1", "Categoria 2", "Categoria 3", "Categoria 4"};
-    String amoutBudget_array[] = {"200", "150", "70", "60"};
-    String amoutSpent_array[] = {"120", "155", "60", "70"};
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
+    private SharedPreferences sharedPref;
+    private Api api;
+
+    private TextView dateView;
+    private ListView listView;
+    private BudgetAdapter adapter;
+
+    private final List<String> categoryValues = new ArrayList<>();
+    private final List<Double> budgetValues = new ArrayList<>();
+    private final List<Double> spentValues = new ArrayList<>();
+    private final List<BudgetDto> budgets = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget);
 
+        api = APIClient.getApi();
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
+
         dateView = (TextView) findViewById(R.id.date_budget);
         listView = findViewById(R.id.budget_list);
 
-        MyAdapter adapter = new MyAdapter(this,category_array, amoutBudget_array, amoutSpent_array);
+        adapter = new BudgetAdapter(this, categoryValues, budgetValues, spentValues);
         listView.setAdapter(adapter);
 
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("MMM, yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MMM, yyyy", Locale.US);
         String stringDate = format.format(c.getTime());
         dateView.setText(stringDate);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(BudgetActivity.this, "Click budget: "+ i, Toast.LENGTH_SHORT).show();
-                sendToBudgetManageActivity();
-
-            }
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            long id = budgets.get(i).id;
+            Intent budgetManageActivity = new Intent(this, BudgetManageActivity.class);
+            budgetManageActivity.putExtra(BudgetManageActivity.BUDGET_ID_EXTRA, id);
+            startActivity(budgetManageActivity);
         });
 
+        loadData();
     }
 
-    class MyAdapter extends ArrayAdapter<String>{
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+    }
+
+    private void loadData(){
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String end = formatter.format(cal.getTime());
+
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        String start = formatter.format(cal.getTime());
+
+        api.getUserBudgets(sharedPref.getLong(getString(R.string.user_id_preference), 0), true, start, end)
+                .enqueue(new ApiCallback<>(this, data -> {
+                    categoryValues.clear();
+                    budgetValues.clear();
+                    spentValues.clear();
+                    budgets.clear();
+
+                    if(data == null){
+                        return;
+                    }
+
+                    for (BudgetDto b: data) {
+                        categoryValues.add(b.category.name);
+                        budgetValues.add(b.value);
+                        spentValues.add(b.spentValue);
+                    }
+
+                    budgets.addAll(data);
+                    adapter.notifyDataSetChanged();
+                }));
+    }
+
+    class BudgetAdapter extends ArrayAdapter<String>{
 
         Context context;
-        String[] auxCategory;
-        String[] auxAmountBudget;
-        String[] auxAmountSpent;
+        List<String> auxCategory;
+        List<Double> auxAmountBudget;
+        List<Double> auxAmountSpent;
 
-        MyAdapter (Context c, String[] category, String[] amountBudget, String[] amountSpent){
+        BudgetAdapter(Context c, List<String> category, List<Double> amountBudget, List<Double> amountSpent){
             super(c, R.layout.custom_row, R.id.category_title, category);
             this.context = c;
             this.auxCategory = category;
             this.auxAmountBudget = amountBudget;
             this.auxAmountSpent = amountSpent;
-
         }
 
         @NonNull
@@ -84,11 +136,11 @@ public class BudgetActivity extends AppCompatActivity {
             TextView amountBudget = row.findViewById(R.id.amount_budget);
             TextView amountSpent = row.findViewById(R.id.amount_spent);
 
-            category.setText(auxCategory[position]);
-            amountBudget.setText(auxAmountBudget[position]);
-            amountSpent.setText(auxAmountSpent[position]);
+            category.setText(auxCategory.get(position));
+            amountBudget.setText(String.format("%s", auxAmountBudget.get(position)));
+            amountSpent.setText(String.format("%s", auxAmountSpent.get(position)));
 
-            if( Integer.parseInt(auxAmountBudget[position]) < Integer.parseInt(auxAmountSpent[position])){
+            if(auxAmountBudget.get(position) < auxAmountSpent.get(position)){
                 images.setImageResource(R.drawable.ic_no_budget);
             } else{
                 images.setImageResource(R.drawable.ic__budget);
@@ -96,10 +148,6 @@ public class BudgetActivity extends AppCompatActivity {
 
             return row;
         }
-    }
-    public void sendToBudgetManageActivity(){
-        Intent budgetManageActivity = new Intent(this, BudgetManageActivity.class);
-        startActivity(budgetManageActivity);
     }
 
     public void onAddBudget(View v){

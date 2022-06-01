@@ -30,6 +30,10 @@ public abstract class BaseService <T, TRepo extends CrudRepository<T, Long>>{
         return repo.findById(id).orElse(null);
     }
 
+    public T findOrDefault(long id, T defaultValue) {
+        return repo.findById(id).orElse(defaultValue);
+    }
+
     public void delete(Long id) {
         if(repo.findById(id).isPresent()){
             repo.deleteById(id);

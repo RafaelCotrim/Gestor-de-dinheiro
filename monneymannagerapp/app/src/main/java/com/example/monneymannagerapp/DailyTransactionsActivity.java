@@ -27,6 +27,10 @@ import java.util.Locale;
 public class DailyTransactionsActivity extends AppCompatActivity {
 
     public static final String DATE_EXTRA = "DATE";
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+    private SharedPreferences sharedPref;
+    private Api api;
 
     private TextView totalAmountReceived;
     private TextView totalAmountSpent;
@@ -34,9 +38,6 @@ public class DailyTransactionsActivity extends AppCompatActivity {
     private ListView transaction_list;
     private TextView dateView;
 
-    private SharedPreferences sharedPref;
-    private Api api;
-    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
     private ArrayAdapter<String> adapter;
 
     private List<TransactionDto> transactions = new ArrayList<>();
@@ -46,6 +47,9 @@ public class DailyTransactionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_transactions);
+
+        api = APIClient.getApi();
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
 
         // Views
         dateView = findViewById(R.id.transaction_date);
@@ -58,14 +62,10 @@ public class DailyTransactionsActivity extends AppCompatActivity {
 
         transaction_list.setAdapter(adapter);
         transaction_list.setOnItemClickListener((adapterView, view, position, id) -> {
-            //Toast.makeText(getApplicationContext(), "Selected item" + transactions.get(position).toString(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, TransactionActivity.class);
             intent.putExtra(TransactionActivity.ID_EXTRA, transactions.get(position).id);
             startActivity(intent);
         });
-
-        api = APIClient.getApi();
-        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
 
         checkLogin();
         parseDate();
