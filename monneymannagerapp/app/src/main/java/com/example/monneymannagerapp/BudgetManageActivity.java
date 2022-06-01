@@ -1,59 +1,154 @@
 package com.example.monneymannagerapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.monneymannagerapp.api.APIClient;
+import com.example.monneymannagerapp.api.Api;
+import com.example.monneymannagerapp.api.ApiCallback;
+import com.example.monneymannagerapp.api.dtos.BudgetDto;
+import com.example.monneymannagerapp.api.dtos.BudgetForUpdate;
+import com.example.monneymannagerapp.api.dtos.CategoryDto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class BudgetManageActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> categoryAdapter;
+    public static final String BUDGET_ID_EXTRA = "ID";
+
+    // Base
+    private SharedPreferences sharedPref;
+    private Api api;
+
+    // Views
     private TextView budgetAmount;
+    ListView categoryList;
+
+    // View Related
+    private ArrayAdapter<String> categoryAdapter;
+
+    // Data
+    long budgetId = 0;
+    BudgetDto currentBudget;
+    private final List<CategoryDto> categories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_manage);
 
-        budgetAmount = (TextView) findViewById(R.id.budget_amount_edit);
+        api = APIClient.getApi();
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
 
-        ListView categoryList = (ListView) findViewById(R.id.categories_budget_list_edit);
-        ArrayList<String> categories = addCategories();
+        budgetId = getIntent().getExtras().getLong(BUDGET_ID_EXTRA);
+
+        budgetAmount = findViewById(R.id.budget_amount_edit);
+        categoryList = findViewById(R.id.categories_budget_list_edit);
+
         categoryList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, categories);
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, new ArrayList<>());
         categoryList.setAdapter(categoryAdapter);
-        budgetAmount.setText("200"); //TODO - procurar o amount que já esta registado para pre preencher o campo.
-        //TODO - procurar a categoria que já esta registado para pre selecionar o campo.
 
+        loadData();
     }
 
-    private ArrayList<String> addCategories(){
-        ArrayList<String> categories = new ArrayList<String>();
-        categories.add("Categoria 1");
-        categories.add("Categoria 2");
-        categories.add("Categoria 3");
-        categories.add("Categoria 4");
-        categories.add("Categoria 5");
-        return categories;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
     }
 
     public void onSaveBudget(View v){
-        String amount = budgetAmount.getText().toString();
-        //TODO - getSelectedCategoryId
-        //TODO - editar registo
-        Toast.makeText(BudgetManageActivity.this, "As alterações foram salvas!", Toast.LENGTH_SHORT).show();
+        double amount =  Double.parseDouble(budgetAmount.getText().toString());
+        int pos = categoryList.getCheckedItemPosition();
+        long categoryId = 0;
+
+        if(pos != -1){
+            categoryId = categories.get(pos).id;
+        }
+
+        BudgetForUpdate b =  new BudgetForUpdate(amount, categoryId, sharedPref.getLong(getString(R.string.user_id_preference), 0));
+
+        api.updateBudget(budgetId, b).enqueue(new ApiCallback<>(this, data -> {
+            if(data == null){
+                return;
+            }
+            finish();
+        }));
     }
 
     public void onRemoveBudget(View v){
-        //TODO - remover
-        //TODO - remover
-        //TODO - remover
-        Toast.makeText(BudgetManageActivity.this, "Orçamento Removido!", Toast.LENGTH_SHORT).show();
+
+        api.deleteBudget(budgetId).enqueue(new ApiCallback<>(this, data -> finish()));
     }
+
+    private void loadData(){
+
+        api.getUserBudgets(sharedPref.getLong(getString(R.string.user_id_preference), 0), true, null, null)
+                .enqueue(new ApiCallback<>(this, data-> {
+                    if(data == null){
+                        return;
+                    }
+
+                    Set<Long> usedCategories = new HashSet<>();
+
+                    for (BudgetDto b : data) {
+                        if(b.id != budgetId){
+                            usedCategories.add(b.category.id);
+                        } else {
+                            currentBudget = b;
+                        }
+                    }
+
+                    loadCategories(usedCategories);
+                    budgetAmount.setText(String.format("%s", currentBudget.value));
+                }));
+    }
+
+    private void loadCategories(Set<Long> usedCategories){
+
+        api.getUserCategories(sharedPref.getLong(getString(R.string.user_id_preference), 0))
+                .enqueue(new ApiCallback<>(this, data -> {
+
+                    if(data == null){
+                        return;
+                    }
+
+                    categoryAdapter.clear();
+
+                    int absIndex = 0;
+                    int position = 0;
+                    for (int i = 0; i < data.size(); i++) {
+                        CategoryDto c = data.get(i);
+
+                        if(usedCategories.contains(c.id)){
+                            continue;
+                        }
+
+                        categoryAdapter.add(c.name);
+                        categories.add(c);
+
+                        if(currentBudget.category.id == c.id){
+                            position = absIndex;
+                        }
+
+                        absIndex++;
+                    }
+
+                    categoryAdapter.notifyDataSetChanged();
+
+                    categoryList.setItemChecked(position, true);
+                }));
+    }
+
 }

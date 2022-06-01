@@ -24,8 +24,9 @@ public class ApiCallback<T> implements Callback<T> {
 
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-        Log.v(TAG, String.format("%s %s (Sucess=%b)", call.request().method(), call.request().url().url(), response.isSuccessful()));
+        Log.v(TAG, String.format("%s %s (%s)", call.request().method(), call.request().url().url(), response.code()));
         responseHandler.method(response.body());
+
         if(!response.isSuccessful()){
             Toast.makeText(context, "Não foi possível executar a operação", Toast.LENGTH_LONG).show();
         }
@@ -33,7 +34,7 @@ public class ApiCallback<T> implements Callback<T> {
 
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
-        Log.v(TAG, String.format("%s %s (Error)", call.request().method(), call.request().url().url()));
+        Log.v(TAG, String.format("%s %s (%s)", call.request().method(), call.request().url().url(), t.toString()));
         responseHandler.method(null);
         Toast.makeText(context, "Não foi possível executar a operação", Toast.LENGTH_LONG).show();
     }

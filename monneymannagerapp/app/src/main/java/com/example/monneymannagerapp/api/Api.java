@@ -1,5 +1,8 @@
 package com.example.monneymannagerapp.api;
 
+import com.example.monneymannagerapp.api.dtos.BudgetDto;
+import com.example.monneymannagerapp.api.dtos.BudgetForCreate;
+import com.example.monneymannagerapp.api.dtos.BudgetForUpdate;
 import com.example.monneymannagerapp.api.dtos.CategoryDto;
 import com.example.monneymannagerapp.api.dtos.CategoryForCreate;
 import com.example.monneymannagerapp.api.dtos.StatisticsDto;
@@ -47,6 +50,9 @@ public interface Api {
     @GET("/users/{id}/statistics")
     Call<List<StatisticsDto>> getUserStatistics(@Path("id") long id);
 
+    @GET("/users/{id}/budgets")
+    Call<List<BudgetDto>> getUserBudgets(@Path("id") long id, @Query("category-info") Boolean categoryInfo, @Query("date-start") String dateStart, @Query("date-end") String dateEnd);
+
     // Transaction methods
 
     @GET("/transactions")
@@ -68,4 +74,15 @@ public interface Api {
 
     @POST("/categories")
     Call<CategoryDto> createCategory(@Body CategoryForCreate cfc);
+
+    // Budgets
+
+    @POST("/budgets")
+    Call<BudgetDto> createBudget(@Body BudgetForCreate bfc);
+
+    @DELETE("/budgets/{id}")
+    Call<Void> deleteBudget(@Path("id") long id);
+
+    @PUT("/budgets/{id}")
+    Call<BudgetDto> updateBudget(@Path("id") long id, @Body BudgetForUpdate bfu);
 }

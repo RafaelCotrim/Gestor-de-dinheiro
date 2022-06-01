@@ -34,21 +34,22 @@ import java.util.Locale;
 
 public class AddTransactionActivity extends AppCompatActivity {
 
+    private SharedPreferences sharedPref;
+    private Api api;
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
     private TextView transactionAmount;
     private RadioButton debitButton;
     private TextView newCategoryName;
-
-    private ArrayAdapter<String> categoryAdapter;
-    private SharedPreferences sharedPref;
-    private Api api;
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
+
+    private ArrayAdapter<String> categoryAdapter;
 
     private List<CategoryDto> categories = new ArrayList<>();
     private int selectedCategory = -1;
     private String date;
-    private Date dateSet;
-    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+
 
     public static final String DATE_EXTRA = "DATE";
     @Override
@@ -212,7 +213,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         calendar.set(Calendar.DAY_OF_MONTH, day);
         calendar.set(Calendar.YEAR, year);
 
-        dateSet = calendar.getTime();
+        Date dateSet = calendar.getTime();
         String dateFormat = formatter.format(dateSet);
         return dateFormat;
     }

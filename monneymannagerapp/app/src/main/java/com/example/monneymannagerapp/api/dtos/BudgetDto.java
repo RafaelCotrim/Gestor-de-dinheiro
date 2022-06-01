@@ -1,11 +1,8 @@
 package com.example.monneymannagerapp.api.dtos;
 
-import java.util.Date;
-
-public class TransactionDto {
+public class BudgetDto {
     public long id;
     public double value;
-    public Date date;
-    public ContextInfo user;
+    public double spentValue;
     public ContextInfo category;
 }

@@ -91,8 +91,11 @@ public class UserController {
     }
 
     @GetMapping("/{id}/budgets")
-    public List<Budget> getUserBudgets(@PathVariable long id) {
-        return userService.find(id).getBudgets();
+    public List<BudgetDto> getUserBudgets(@PathVariable long id,
+                                          @RequestParam(name="category-info", required = false) boolean categoryInfo,
+                                          @RequestParam(name="date-start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateStart,
+                                          @RequestParam(name="date-end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEnd) {
+        return userService.find(id).getBudgets().stream().map(b -> BudgetDto.from(b, categoryInfo, dateStart, dateEnd)).collect(Collectors.toList());
     }
 
 }
