@@ -84,8 +84,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             //carregar fragment de orçamentos
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container, new BudgetFragment());
-            fragmentTransaction.commit();
+            Intent budgetActivity = new Intent(this, BudgetActivity.class);
+            startActivity(budgetActivity);
         }
         if(menuItem.getItemId() == R.id.profile){
             //carregar fragment de dados pessoais

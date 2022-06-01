@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/amount_budget"
         android:layout_width="match_parent"
         android:layout_height="85dp"
         android:background="#E46359"

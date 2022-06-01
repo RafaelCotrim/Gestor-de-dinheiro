@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Monneymannagerapp">
         <activity
+            android:name=".BudgetManageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BudgetActivity"
+            android:exported="false" />
+        <activity
             android:name=".TransactionActivity"
             android:exported="false" />
         <activity
