@@ -29,7 +29,7 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Mariana"
+        android:hint="setUsername"
         android:textColor="#171717"
         android:textSize="48sp"
         android:textStyle="bold"
