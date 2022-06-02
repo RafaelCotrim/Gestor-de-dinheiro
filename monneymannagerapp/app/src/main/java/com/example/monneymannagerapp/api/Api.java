@@ -39,8 +39,17 @@ public interface Api {
 
     // User methods
 
+    @GET("/users")
+    Call<List<UserDto>> getAllUsers();
+
+    @GET("/users/{id}")
+    Call<UserDto> getUser(@Path("id") long id);
+
     @PUT("/users/{id}")
     Call<UserDto> updateUser(@Path("id") long id, @Body UserForUpdate ufu);
+
+    @DELETE("/users/{id}")
+    Call<Void> deleteUser(@Path("id") long id);
 
     @GET("/users/{id}/transactions")
     Call<List<TransactionDto>> getUserTransactions(@Path("id") long id, @Query("category-info") Boolean categoryInfo, @Query("date") String date);

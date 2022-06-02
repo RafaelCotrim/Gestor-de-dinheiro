@@ -35,13 +35,7 @@ public abstract class BaseService <T, TRepo extends CrudRepository<T, Long>>{
     }
 
     public void delete(Long id) {
-        if(repo.findById(id).isPresent()){
-            repo.deleteById(id);
-            return;
-        }
-
-        throw new ResponseStatusException(NOT_FOUND);
-
+        repo.delete(find(id));
     }
 
     public boolean exists(long id){

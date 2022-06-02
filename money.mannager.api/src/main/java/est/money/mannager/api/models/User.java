@@ -26,15 +26,15 @@ public class User {
     @NotNull
     private byte[] hashPass;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user_transaction")
     private List<Transaction> transactions;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user_category")
     private List<Category> categories;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user_budget")
     private List<Budget> budgets;
 

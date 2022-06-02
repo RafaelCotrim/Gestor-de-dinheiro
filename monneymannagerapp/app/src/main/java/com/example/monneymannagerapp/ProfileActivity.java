@@ -62,7 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "Para mudar a senha, tanto pasword quanto sua confirmação são necessárias", Toast.LENGTH_LONG).show();
         } else {
 
-            UserForUpdate ufu = new UserForUpdate(name, email, password, passwordConf);
+            UserForUpdate ufu = new UserForUpdate(name, email, password, passwordConf, sharedPref.getBoolean(getString(R.string.user_admin_preference), false));
             api.updateUser(sharedPref.getLong(getString(R.string.user_id_preference), 0), ufu)
                     .enqueue(new ApiCallback<>(this, data -> {
                         if(data == null){

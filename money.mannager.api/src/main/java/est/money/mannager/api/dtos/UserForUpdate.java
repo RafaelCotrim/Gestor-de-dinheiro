@@ -5,4 +5,5 @@ public class UserForUpdate {
     public String email;
     public String password;
     public String confirmation;
+    public boolean admin;
 }

@@ -37,6 +37,7 @@ public class UserService extends BaseService<User, UserRepository>{
                 .map(user -> {
                     user.setName(newUser.name);
                     user.setEmail(newUser.email);
+                    user.setAdmin(newUser.admin);
 
                     if(updatePass){
                         user.setHashPass(authService.hash(newUser.password.trim(), user.getSalt()));
