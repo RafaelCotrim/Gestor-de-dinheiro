@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,7 +14,7 @@ import com.example.monneymannagerapp.api.ApiCallback;
 import com.example.monneymannagerapp.api.dtos.UserForUpdate;
 
 public class UserActivity extends AppCompatActivity {
-
+    private CheckBox adminCheckbox;
     private TextView nameEditInput, emailEditInput, passEditInput, passConfEditInput;
     private SharedPreferences sharedPref;
     private Api api;
@@ -23,6 +24,7 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        adminCheckbox = findViewById(R.id.admin_checkbox);
         nameEditInput = findViewById(R.id.edit_name_input);
         emailEditInput = findViewById(R.id.edit_email_input);
         passEditInput = findViewById(R.id.edit_pass_input);
@@ -31,6 +33,10 @@ public class UserActivity extends AppCompatActivity {
         //TODO - alterar os seguintes campos pela pesquisa da API;
         nameEditInput.setText("Nome pesquisado na API");
         emailEditInput.setText("Email pesquisado na API");
+
+        //TODO if type_user == "admin":
+        adminCheckbox.setChecked(true);
+
     }
 
     public void editUser(View v){
@@ -55,6 +61,9 @@ public class UserActivity extends AppCompatActivity {
                         emailEditInput.setText(data.email);
                         passEditInput.setText("");
                         passConfEditInput.setText("");
+                        // admin?
+                        boolean admin = adminCheckboxStatus();
+
 
                         sharedPref.edit()
                                 .putString(getString(R.string.user_name_preference), data.name)
@@ -70,5 +79,18 @@ public class UserActivity extends AppCompatActivity {
         //TODO remove user
         //TODO remove user
         //TODO remove user
+    }
+
+    public boolean adminCheckboxStatus() {
+        final boolean[] adminStatus = {false};
+        adminCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(adminCheckbox.isChecked()) {
+                    adminStatus[0] = true;
+                }
+            }
+        });
+        return adminStatus[0];
     }
 }

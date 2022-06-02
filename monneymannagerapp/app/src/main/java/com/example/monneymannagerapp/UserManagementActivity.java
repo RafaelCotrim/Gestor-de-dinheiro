@@ -36,7 +36,7 @@ public class UserManagementActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(UserManagementActivity.this, "Click user: "+ i, Toast.LENGTH_SHORT).show();
-                //TODO openUser();
+                openUser(view);
 
             }
         });
@@ -46,7 +46,7 @@ public class UserManagementActivity extends AppCompatActivity {
         String emailString = email.getText().toString();
         //TODO procurar user com este email
         //TODO if user:
-        //TODO    openUser();
+        openUser(v);
         //TODO else:
         Toast.makeText(UserManagementActivity.this, "Email incorreto!", Toast.LENGTH_SHORT).show();
     }
