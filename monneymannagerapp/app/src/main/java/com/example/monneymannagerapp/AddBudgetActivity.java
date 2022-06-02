@@ -3,7 +3,6 @@ package com.example.monneymannagerapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -54,13 +53,13 @@ public class AddBudgetActivity extends AppCompatActivity {
         categoryList.setAdapter(categoryAdapter);
 
 
-        loadCategories();
+        loadData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadCategories();
+        loadData();
     }
 
     public void onAddBudget(View v){
@@ -84,9 +83,9 @@ public class AddBudgetActivity extends AppCompatActivity {
                         }));
     }
 
-    private void loadCategories(){
+    private void loadData(){
 
-        Set<Long> usedCategories = new HashSet<>();
+
 
         api.getUserBudgets(sharedPref.getLong(getString(R.string.user_id_preference), 0), true, null, null)
                         .enqueue(new ApiCallback<>(this, data-> {
@@ -94,11 +93,19 @@ public class AddBudgetActivity extends AppCompatActivity {
                                 return;
                             }
 
+                            Set<Long> usedCategories = new HashSet<>();
+
                             for (BudgetDto b : data) {
                                 usedCategories.add(b.category.id);
                             }
+
+                            loadCategories(usedCategories);
                         }));
 
+
+    }
+
+    private void loadCategories(Set<Long> usedCategories){
         api.getUserCategories(sharedPref.getLong(getString(R.string.user_id_preference), 0))
                 .enqueue(new ApiCallback<>(this, data -> {
                     categories.clear();
@@ -120,6 +127,7 @@ public class AddBudgetActivity extends AppCompatActivity {
                     writeCategories();
                 }));
     }
+
 
     private void writeCategories(){
         categoryAdapter.clear();

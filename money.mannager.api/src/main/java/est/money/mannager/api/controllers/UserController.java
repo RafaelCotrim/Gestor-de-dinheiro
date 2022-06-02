@@ -78,21 +78,24 @@ public class UserController {
         return transactions.stream().map(x -> TransactionDto.from(x, false, categoryInfo)).collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get categories of a single user")
     @GetMapping("/{id}/categories")
-    public List<CategoryDto> findUserCategories(@PathVariable long id) {
+    public List<CategoryDto> findUserCategories(@Parameter(description = "Id of the searched user") @PathVariable long id) {
         return userService.find(id).getCategories().stream().map(CategoryDto::from).collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get budgets of a single user")
     @GetMapping("/{id}/budgets")
-    public List<BudgetDto> getUserBudgets(@PathVariable long id,
-                                          @RequestParam(name="category-info", required = false) boolean categoryInfo,
-                                          @RequestParam(name="date-start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateStart,
-                                          @RequestParam(name="date-end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEnd) {
+    public List<BudgetDto> getUserBudgets(@Parameter(description = "Id of the searched user") @PathVariable long id,
+                                          @Parameter(description = "Whether or not the response should contain category data") @RequestParam(name="category-info", required = false) boolean categoryInfo,
+                                          @Parameter(description = "Start of the date range considered (inclusive)") @RequestParam(name="date-start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateStart,
+                                          @Parameter(description = "End of the date range considered (inclusive)") @RequestParam(name="date-end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEnd) {
         return userService.find(id).getBudgets().stream().map(b -> BudgetDto.from(b, categoryInfo, dateStart, dateEnd)).collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get user statistics")
     @GetMapping("/{id}/statistics")
-    public List<StatisticsDto> findUserStatistics(@PathVariable long id) {
+    public List<StatisticsDto> findUserStatistics(@Parameter(description = "Id of the searched user") @PathVariable long id) {
         return userService.find(id)
                 .getTransactions()
                 .stream()
@@ -107,8 +110,9 @@ public class UserController {
                 .toList();
     }
 
+    @Operation(summary = "Get user dashboard statistics")
     @GetMapping("/{id}/dashboard")
-    public DashboardStatisticsDto findUserDashboardStatistics(@PathVariable long id){
+    public DashboardStatisticsDto findUserDashboardStatistics(@Parameter(description = "Id of the searched user") @PathVariable long id){
         DashboardStatisticsDto stats = new DashboardStatisticsDto();
 
         List<Transaction> transactions = userService.find(id).getTransactions();
