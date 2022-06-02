@@ -10,7 +10,6 @@ import est.money.mannager.api.services.CategoryService;
 import est.money.mannager.api.services.TransactionService;
 import est.money.mannager.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -57,7 +56,15 @@ public class TransactionController {
 
     @PutMapping("/{id}")
     public TransactionDto update(@PathVariable Long id, @RequestBody TransactionForUpdate newValue) {
-        return TransactionDto.from(transactionService.update(id, newValue));
+
+        Transaction t =  transactionService.findOrDefault(id, new Transaction());
+        t.setUser(userService.find(newValue.userId));
+        t.setCategory(categoryService.findOrNull(id));
+        t.setDate(newValue.date);
+        t.setValue(newValue.value);
+
+
+        return TransactionDto.from(transactionService.update(id, t));
     }
 
     @DeleteMapping("/{id}")
