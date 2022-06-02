@@ -1,6 +1,6 @@
 package est.money.mannager.api.services;
 
-import est.money.mannager.api.dtos.UserDTO;
+import est.money.mannager.api.dtos.UserDto;
 import est.money.mannager.api.dtos.UserForLogin;
 import est.money.mannager.api.dtos.UserForRegister;
 import est.money.mannager.api.models.User;
@@ -25,20 +25,20 @@ public class AuthService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDTO login(UserForLogin ufl){
+    public UserDto login(UserForLogin ufl){
 
         User u = userRepository.findByEmail(ufl.getEmail()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "User not found"));
 
         byte[] hash = hash(ufl.getPassword(), u.getSalt());
 
         if(Arrays.equals(hash, u.getHashPass())){
-            return new UserDTO(u.getId(), u.getName(), u.getEmail(), u.isAdmin());
+            return new UserDto(u.getId(), u.getName(), u.getEmail(), u.isAdmin());
         }
 
         throw new ResponseStatusException(BAD_REQUEST);
     }
 
-    public UserDTO register(UserForRegister ufr){
+    public UserDto register(UserForRegister ufr){
 
         ufr.email = ufr.email.toLowerCase();
 
@@ -59,7 +59,7 @@ public class AuthService {
         User u = new User(ufr.name, ufr.email, salt, hash, false);
 
         User savedUser = userRepository.save(u);
-        return new UserDTO(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), u.isAdmin());
+        return new UserDto(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), u.isAdmin());
     }
 
     public byte[] hash(String password, byte[] salt){

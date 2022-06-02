@@ -1,6 +1,6 @@
 package est.money.mannager.api.controllers;
 
-import est.money.mannager.api.dtos.UserDTO;
+import est.money.mannager.api.dtos.UserDto;
 import est.money.mannager.api.dtos.UserForLogin;
 import est.money.mannager.api.dtos.UserForRegister;
 import est.money.mannager.api.services.AuthService;
@@ -19,12 +19,12 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public UserDTO login(@RequestBody UserForLogin user){
+    public UserDto login(@RequestBody UserForLogin user){
         return authService.login(user);
     }
 
     @PostMapping("/register")
-    public UserDTO register(@RequestBody UserForRegister ufl){
+    public UserDto register(@RequestBody UserForRegister ufl){
         return authService.register(ufl);
     }
 

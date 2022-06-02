@@ -42,7 +42,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         navigationView = findViewById(R.id.navigationView);
         sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
         //estabelecer evento onClick na navigationView
-        if(userType.equals("Admin")){
+        if(sharedPref.getBoolean(getString(R.string.user_admin_preference), false)){
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.drawer_menu_admin);
         }
@@ -63,7 +63,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         drawerLayout.closeDrawer(GravityCompat.START);
-        if(userType.equals("Admin") && menuItem.getItemId() == R.id.management){
+        if(sharedPref.getBoolean(getString(R.string.user_admin_preference), false) && menuItem.getItemId() == R.id.management){
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             Intent userActivity = new Intent(this, UserManagementActivity.class);
@@ -118,6 +118,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 .remove(getString(R.string.user_name_preference))
                 .apply();
 
+        finish();
         startActivity(new Intent(this, MainActivity.class));
     }
 }

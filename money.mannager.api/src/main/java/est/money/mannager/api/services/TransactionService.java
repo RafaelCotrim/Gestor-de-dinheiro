@@ -23,7 +23,6 @@ public class TransactionService extends BaseService<Transaction, TransactionRepo
 
     public Transaction update(Long id, Transaction newValue){
 
-
         return repo.findById(id)
                 .map(transaction -> {
                     transaction.setCategory(newValue.getCategory());

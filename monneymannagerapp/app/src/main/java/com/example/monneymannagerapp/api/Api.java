@@ -5,6 +5,7 @@ import com.example.monneymannagerapp.api.dtos.BudgetForCreate;
 import com.example.monneymannagerapp.api.dtos.BudgetForUpdate;
 import com.example.monneymannagerapp.api.dtos.CategoryDto;
 import com.example.monneymannagerapp.api.dtos.CategoryForCreate;
+import com.example.monneymannagerapp.api.dtos.DashboardStatisticsDto;
 import com.example.monneymannagerapp.api.dtos.StatisticsDto;
 import com.example.monneymannagerapp.api.dtos.TransactionDto;
 import com.example.monneymannagerapp.api.dtos.TransactionForCreate;
@@ -49,6 +50,9 @@ public interface Api {
 
     @GET("/users/{id}/statistics")
     Call<List<StatisticsDto>> getUserStatistics(@Path("id") long id);
+
+    @GET("/users/{id}/dashboard")
+    Call<DashboardStatisticsDto> getUserDashboard(@Path("id") long id);
 
     @GET("/users/{id}/budgets")
     Call<List<BudgetDto>> getUserBudgets(@Path("id") long id, @Query("category-info") Boolean categoryInfo, @Query("date-start") String dateStart, @Query("date-end") String dateEnd);

@@ -1,9 +1,7 @@
 package est.money.mannager.api.controllers;
 
 import est.money.mannager.api.dtos.*;
-import est.money.mannager.api.models.Budget;
 import est.money.mannager.api.models.Transaction;
-import est.money.mannager.api.models.User;
 import est.money.mannager.api.repositories.BudgetRepository;
 import est.money.mannager.api.services.CategoryService;
 import est.money.mannager.api.services.TransactionService;
@@ -14,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/users")
@@ -37,21 +37,21 @@ public class UserController {
 
     @Operation(summary = "Get all users")
     @GetMapping
-    public List<UserDTO> findAll() {
-        return userService.findAll().stream().map(UserDTO::from).collect(Collectors.toList());
+    public List<UserDto> findAll() {
+        return userService.findAll().stream().map(UserDto::from).collect(Collectors.toList());
     }
 
     @Operation(summary = "Get user by id")
     @GetMapping("/{id}")
-    public UserDTO findUser(@Parameter(description = "Id of the user searched")  @PathVariable long id) {
-        return UserDTO.from(userService.find(id));
+    public UserDto findUser(@Parameter(description = "Id of the user searched")  @PathVariable long id) {
+        return UserDto.from(userService.find(id));
     }
 
     @Operation(summary = "Update a user")
     @PutMapping("/{id}")
-    public UserDTO updateUser(@Parameter(description = "Id of the updated user") @PathVariable Long id,
+    public UserDto updateUser(@Parameter(description = "Id of the updated user") @PathVariable Long id,
                               @RequestBody UserForUpdate userForUpdate) {
-        return UserDTO.from(userService.update(id, userForUpdate));
+        return UserDto.from(userService.update(id, userForUpdate));
     }
 
     @Operation(summary = "Delete user")
@@ -83,6 +83,14 @@ public class UserController {
         return userService.find(id).getCategories().stream().map(CategoryDto::from).collect(Collectors.toList());
     }
 
+    @GetMapping("/{id}/budgets")
+    public List<BudgetDto> getUserBudgets(@PathVariable long id,
+                                          @RequestParam(name="category-info", required = false) boolean categoryInfo,
+                                          @RequestParam(name="date-start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateStart,
+                                          @RequestParam(name="date-end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEnd) {
+        return userService.find(id).getBudgets().stream().map(b -> BudgetDto.from(b, categoryInfo, dateStart, dateEnd)).collect(Collectors.toList());
+    }
+
     @GetMapping("/{id}/statistics")
     public List<StatisticsDto> findUserStatistics(@PathVariable long id) {
         return userService.find(id)
@@ -93,18 +101,66 @@ public class UserController {
                 .entrySet()
                 .stream()
                 .map(e -> new StatisticsDto(
-                         e.getKey(),
-                         e.getValue().stream().map(t -> t.getValue() * -1).reduce(0.0, Double::sum)))
+                        e.getKey(),
+                        e.getValue().stream().map(t -> t.getValue() * -1).reduce(0.0, Double::sum)))
                 .sorted(Comparator.comparingDouble(StatisticsDto::getValue).reversed())
                 .toList();
     }
 
-    @GetMapping("/{id}/budgets")
-    public List<BudgetDto> getUserBudgets(@PathVariable long id,
-                                          @RequestParam(name="category-info", required = false) boolean categoryInfo,
-                                          @RequestParam(name="date-start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateStart,
-                                          @RequestParam(name="date-end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEnd) {
-        return userService.find(id).getBudgets().stream().map(b -> BudgetDto.from(b, categoryInfo, dateStart, dateEnd)).collect(Collectors.toList());
+    @GetMapping("/{id}/dashboard")
+    public DashboardStatisticsDto findUserDashboardStatistics(@PathVariable long id){
+        DashboardStatisticsDto stats = new DashboardStatisticsDto();
+
+        List<Transaction> transactions = userService.find(id).getTransactions();
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_YEAR, cal.getActualMinimum(Calendar.DAY_OF_YEAR));
+
+        final Date yearDate = cal.getTime();
+
+        stats.total = transactions
+                .stream()
+                .map(Transaction::getValue)
+                .reduce(0.0, Double::sum);
+
+        stats.yearExpenses = Math.abs(transactions
+                .stream()
+                .filter(t -> t.getDate().compareTo(yearDate) >= 0 && t.getValue() < 0)
+                .map(Transaction::getValue)
+                .reduce(0.0, Double::sum));
+
+        cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+        final Date monthDate = cal.getTime();
+
+        stats.monthExpenses = Math.abs(transactions
+                .stream()
+                .filter(t -> t.getDate().compareTo(monthDate) >= 0 && t.getValue() < 0)
+                .map(Transaction::getValue)
+                .reduce(0.0, Double::sum));
+
+        cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, cal.getActualMinimum(Calendar.DAY_OF_WEEK));
+        final Date weekDate = cal.getTime();
+
+        stats.weekExpenses = Math.abs(transactions
+                .stream()
+                .filter(t -> t.getDate().compareTo(weekDate) >= 0 && t.getValue() < 0)
+                .map(Transaction::getValue)
+                .reduce(0.0, Double::sum));
+
+        cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));
+        final Date dayDate = cal.getTime();
+
+        stats.dayExpenses = Math.abs(transactions
+                .stream()
+                .filter(t -> t.getDate().compareTo(dayDate) >= 0 && t.getValue() < 0)
+                .map(Transaction::getValue)
+                .reduce(0.0, Double::sum));
+
+        return stats;
     }
+
 
 }

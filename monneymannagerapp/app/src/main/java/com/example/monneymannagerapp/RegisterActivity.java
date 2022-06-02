@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                 sharedPref.edit()
                         .putLong(getString(R.string.user_id_preference), u.id)
                         .putString(getString(R.string.user_name_preference), u.name)
-                        .putBoolean(getString(R.string.user_admin_preference), u.isAdmin)
+                        .putBoolean(getString(R.string.user_admin_preference), u.admin)
                         .putString(getString(R.string.user_email_preference), u.email)
                         .apply();
                 startActivity(new Intent(context, DashboardActivity.class));

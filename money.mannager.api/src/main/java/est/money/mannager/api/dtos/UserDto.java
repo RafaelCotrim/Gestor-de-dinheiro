@@ -2,15 +2,15 @@ package est.money.mannager.api.dtos;
 
 import est.money.mannager.api.models.User;
 
-public class UserDTO {
+public class UserDto {
     private long id;
     private String name;
     private String email;
     private boolean isAdmin;
 
-    public UserDTO(){}
+    public UserDto(){}
 
-    public UserDTO(long id, String name, String email, boolean isAdmin) {
+    public UserDto(long id, String name, String email, boolean isAdmin) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -49,7 +49,7 @@ public class UserDTO {
         isAdmin = admin;
     }
 
-    public static UserDTO from(User u ){
-        return new UserDTO(u.getId(), u.getName(), u.getEmail(), u.isAdmin());
+    public static UserDto from(User u ){
+        return new UserDto(u.getId(), u.getName(), u.getEmail(), u.isAdmin());
     }
 }
