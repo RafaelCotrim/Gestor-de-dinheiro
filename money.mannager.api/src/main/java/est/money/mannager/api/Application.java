@@ -14,6 +14,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
+//import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Base64;
 import java.util.Calendar;
@@ -21,6 +22,7 @@ import java.util.Date;
 
 @SpringBootApplication
 @RestController
+//@EnableSwagger2
 public class Application {
 
 	@Autowired

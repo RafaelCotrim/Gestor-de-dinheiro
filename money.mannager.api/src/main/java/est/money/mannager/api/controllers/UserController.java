@@ -8,6 +8,8 @@ import est.money.mannager.api.repositories.BudgetRepository;
 import est.money.mannager.api.services.CategoryService;
 import est.money.mannager.api.services.TransactionService;
 import est.money.mannager.api.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -33,30 +35,37 @@ public class UserController {
     @Autowired
     private BudgetRepository budgetRepository;
 
+    @Operation(summary = "Get all users")
     @GetMapping
     public List<UserDTO> findAll() {
         return userService.findAll().stream().map(UserDTO::from).collect(Collectors.toList());
     }
 
+    @Operation(summary = "Get user by id")
     @GetMapping("/{id}")
-    public UserDTO findUser(@PathVariable long id) {
+    public UserDTO findUser(@Parameter(description = "Id of the user searched")  @PathVariable long id) {
         return UserDTO.from(userService.find(id));
     }
 
+    @Operation(summary = "Update a user")
     @PutMapping("/{id}")
-    public UserDTO updateUser(@RequestBody UserForUpdate userForUpdate, @PathVariable Long id) {
+    public UserDTO updateUser(@Parameter(description = "Id of the updated user") @PathVariable Long id,
+                              @RequestBody UserForUpdate userForUpdate) {
         return UserDTO.from(userService.update(id, userForUpdate));
     }
 
+    @Operation(summary = "Delete user")
     @DeleteMapping("/{id}")
-    void deleteUser(@PathVariable Long id) {
+    void deleteUser(@Parameter(description = "Id of the deleted user") @PathVariable Long id) {
         userService.delete(id);
     }
 
+    @Operation(summary = "Get transaction of a single user")
     @GetMapping("/{id}/transactions")
-    public List<TransactionDto> findUserTransactions(@PathVariable long id,
-                                                     @RequestParam(name="category-info", required = false) boolean categoryInfo,
-                                                     @RequestParam(name="date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+    public List<TransactionDto> findUserTransactions(
+            @Parameter(description = "Id of the searched user") @PathVariable long id,
+            @Parameter(description = "Whether or not the response should contain category data") @RequestParam(name="category-info", required = false) boolean categoryInfo,
+            @Parameter(description = "The date of when the transactions took place") @RequestParam(name="date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         userService.existsOrThrow(id);
         List<Transaction> transactions;
 

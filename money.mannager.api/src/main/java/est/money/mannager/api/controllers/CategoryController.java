@@ -2,6 +2,7 @@ package est.money.mannager.api.controllers;
 
 import est.money.mannager.api.dtos.CategoryDto;
 import est.money.mannager.api.dtos.CategoryForCreate;
+import est.money.mannager.api.dtos.CategoryForUpdate;
 import est.money.mannager.api.models.Category;
 import est.money.mannager.api.models.User;
 import est.money.mannager.api.services.CategoryService;
@@ -38,8 +39,14 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public CategoryDto update(@PathVariable Long id, @RequestBody Category newValue) {
-        return CategoryDto.from(categoryService.update(id, newValue));
+    public CategoryDto update(@PathVariable Long id, @RequestBody CategoryForUpdate newValue) {
+
+        Category c = categoryService.findOrDefault(id, new Category());
+
+        c.setUser(userService.find(newValue.userId));
+        c.setName(newValue.name);
+
+        return CategoryDto.from(categoryService.update(id, c));
     }
 
     @DeleteMapping("/{id}")

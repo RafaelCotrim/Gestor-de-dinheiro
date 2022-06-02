@@ -21,22 +21,19 @@ public class TransactionService extends BaseService<Transaction, TransactionRepo
     @Autowired
     private UserService userService;
 
-    public Transaction update(Long id, TransactionForUpdate newValue){
+    public Transaction update(Long id, Transaction newValue){
 
 
         return repo.findById(id)
                 .map(transaction -> {
-                    transaction.setCategory(categoryService.findOrNull(newValue.categoryId));
-                    transaction.setValue(newValue.value);
-                    transaction.setDate(newValue.date);
+                    transaction.setCategory(newValue.getCategory());
+                    transaction.setValue(newValue.getValue());
+                    transaction.setDate(newValue.getDate());
                     return repo.save(transaction);
                 })
                 .orElseGet(() -> {
-                    User u = userService.find(newValue.userId);
-                    Category c = categoryService.findOrNull(newValue.categoryId);
-                    Transaction t = new Transaction(newValue.value, newValue.date, u, c);
-                    t.setId(id);
-                    return repo.save(t);
+                    newValue.setId(id);
+                    return repo.save(newValue);
                 });
     }
 

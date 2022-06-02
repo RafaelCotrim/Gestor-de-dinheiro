@@ -21,10 +21,11 @@ import com.google.android.material.navigation.NavigationView;
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private SharedPreferences sharedPref;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle actionBarDrawerToggle;
-    Toolbar toolbar;
-    NavigationView navigationView;
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
 
     //variaveis para carregar o fragment principal
     FragmentManager fragmentManager;

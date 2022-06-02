@@ -40,13 +40,13 @@ public class AuthService {
 
     public UserDTO register(UserForRegister ufr){
 
-        ufr.setEmail(ufr.getEmail().toLowerCase());
+        ufr.email = ufr.email.toLowerCase();
 
-        if(!ufr.getPassword().equals(ufr.getConfirmation())){
+        if(!ufr.password.equals(ufr.confirmation)){
             throw new ResponseStatusException(BAD_REQUEST, "Password and confirmation password do not match");
         }
 
-        if(userRepository.existsByEmail(ufr.getEmail())){
+        if(userRepository.existsByEmail(ufr.email)){
             throw new ResponseStatusException(BAD_REQUEST, "Email already in use");
         }
 
@@ -54,9 +54,9 @@ public class AuthService {
         byte[] salt = new byte[16];
         random.nextBytes(salt);
 
-        byte[] hash = hash(ufr.getPassword(), salt);
+        byte[] hash = hash(ufr.password, salt);
 
-        User u = new User(ufr.getName(), ufr.getEmail(), salt, hash, false);
+        User u = new User(ufr.name, ufr.email, salt, hash, false);
 
         User savedUser = userRepository.save(u);
         return new UserDTO(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), u.isAdmin());
@@ -83,5 +83,4 @@ public class AuthService {
 
         return hash;
     }
-
 }
