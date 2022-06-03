@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -109,6 +110,11 @@ public class TransactionActivity extends AppCompatActivity {
     }
 
     public void onAddCategory(View v){
+
+        if(newCategoryName.getText().toString().isEmpty()){
+            Toast.makeText(this, "Não é possível criar uma trasação com nome vazio", Toast.LENGTH_LONG).show();
+        }
+
         CategoryForCreate cfc = new CategoryForCreate(newCategoryName.getText().toString(), sharedPref.getLong(getString(R.string.user_id_preference), 0));
         api.createCategory(cfc).enqueue(new ApiCallback<>(this, data -> {
             if(data != null){

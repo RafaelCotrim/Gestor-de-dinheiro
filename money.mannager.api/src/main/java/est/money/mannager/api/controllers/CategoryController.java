@@ -11,9 +11,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/categories")
@@ -34,6 +38,11 @@ public class CategoryController {
     @Operation(summary = "Create category")
     @PostMapping
     public CategoryDto save(@RequestBody CategoryForCreate cft) {
+
+        if(cft.name == null || cft.name.trim().isEmpty()){
+            throw new ResponseStatusException(BAD_REQUEST);
+        }
+
         return CategoryDto.from(categoryService.save(new Category(cft.name, userService.find(cft.userId))));
     }
 

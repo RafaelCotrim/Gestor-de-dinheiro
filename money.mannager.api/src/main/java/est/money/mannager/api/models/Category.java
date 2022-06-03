@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -15,6 +16,7 @@ public class Category {
     private long id;
 
     @NotNull
+    @Size(min = 3, max = 50)
     private String name;
 
     @ManyToOne

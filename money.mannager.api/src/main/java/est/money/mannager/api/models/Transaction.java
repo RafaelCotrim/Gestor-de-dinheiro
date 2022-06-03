@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -21,6 +22,7 @@ public class Transaction {
     @JoinColumn(name="user_id")
     @JsonBackReference("user_transaction")
     @NotNull
+    @Size(min = 3, max = 50)
     private User user;
 
     @ManyToOne

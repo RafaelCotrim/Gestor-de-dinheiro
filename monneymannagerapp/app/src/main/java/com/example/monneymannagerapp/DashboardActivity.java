@@ -105,6 +105,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         return false;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, new MainFragment());
+        fragmentTransaction.commit();
+    }
+
     private void checkLogin(){
         if(sharedPref.getLong(getString(R.string.user_id_preference), 0) == 0){
             startActivity(new Intent(this, MainActivity.class));

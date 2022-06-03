@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +16,11 @@ public class User {
     private long id;
 
     @NotNull
+    @Size(min = 3, max = 50)
     private String name;
 
     @NotNull
+    @Size(min = 3, max = 50)
     private String email;
     private boolean isAdmin;
 
