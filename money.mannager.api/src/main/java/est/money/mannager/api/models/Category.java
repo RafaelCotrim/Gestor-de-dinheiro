@@ -23,11 +23,11 @@ public class Category {
     @NotNull
     private User user;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("category_transaction")
     private List<Transaction> transactions;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("category_budget")
     private List<Budget> budgets;
 

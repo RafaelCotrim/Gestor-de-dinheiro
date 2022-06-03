@@ -47,7 +47,7 @@ public class AuthService {
         }
 
         if(userRepository.existsByEmail(ufr.email)){
-            throw new ResponseStatusException(BAD_REQUEST, "Email already in use");
+            throw new ResponseStatusException(CONFLICT, "Email already in use");
         }
 
         SecureRandom random = new SecureRandom();

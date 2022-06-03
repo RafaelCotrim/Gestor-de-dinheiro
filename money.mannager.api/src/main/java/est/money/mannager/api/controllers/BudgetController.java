@@ -35,8 +35,8 @@ public class BudgetController {
 
     @Operation(summary = "Get all budgets")
     @GetMapping
-    public List<BudgetDto> findAll() {
-        return budgetService.findAll().stream().map(BudgetDto::from).collect(Collectors.toList());
+    public List<BudgetDto> findAll(@Parameter(description = "Whether or not the response should contain category data") @RequestParam(name="category-info", required = false) boolean categoryInfo) {
+        return budgetService.findAll().stream().map(b -> BudgetDto.from(b, categoryInfo, null, null)).collect(Collectors.toList());
     }
 
     @Operation(summary = "Create budget")
@@ -56,8 +56,9 @@ public class BudgetController {
 
     @Operation(summary = "Get budget by id")
     @GetMapping("/{id}")
-    public BudgetDto find(@Parameter(description = "Id of the budget") @PathVariable long id) {
-        return BudgetDto.from(budgetService.find(id));
+    public BudgetDto find(@Parameter(description = "Id of the budget") @PathVariable long id,
+                          @Parameter(description = "Whether or not the response should contain category data") @RequestParam(name="category-info", required = false) boolean categoryInfo) {
+        return BudgetDto.from(budgetService.find(id), categoryInfo, null, null);
     }
 
     @Operation(summary = "Update budget")
