@@ -23,6 +23,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class: AddBudgetActivity
+ * This class is where the new budgets are registered in database.
+ *
+ * When a user chooses to add a new budget, they need enter an
+ * budget amount and select the category that they want.
+ *
+ * It's only possible to create a budget for each category.
+ */
 public class AddBudgetActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPref;

@@ -15,6 +15,16 @@ import com.example.monneymannagerapp.api.Api;
 import com.example.monneymannagerapp.api.ApiCallback;
 import com.example.monneymannagerapp.api.dtos.UserForUpdate;
 
+/**
+ * Class: UserActivity
+ * This class is where the admin user can edit or remove a user.
+ *
+ * If the admin change name, email or password and click on save
+ * button this user will be updated.
+ *
+ * In this class it is also possible to create admin users
+ * selecting the checkbox and click on the save button.
+ */
 public class UserActivity extends AppCompatActivity {
 
     public static final String USER_ID_EXTRA = "USER_ID";

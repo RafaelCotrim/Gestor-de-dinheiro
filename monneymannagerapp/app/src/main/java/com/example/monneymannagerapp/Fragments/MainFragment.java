@@ -17,7 +17,11 @@ import com.example.monneymannagerapp.api.APIClient;
 import com.example.monneymannagerapp.api.Api;
 import com.example.monneymannagerapp.api.ApiCallback;
 
-//Dashboard
+/**
+ * Class: MainFragment
+ * This class is where the layout of the DashboardActivity
+ * is returned, where the side menu is associated.
+ */
 public class MainFragment extends Fragment {
 
     private SharedPreferences sharedPref;

@@ -29,6 +29,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Class: TransactionActivity
+ * This class is where the user can edit or remove a transaction.
+ *
+ * If the user changes the transaction amount, action, date, or
+ * a category and click on save button this transaction will be
+ * edited and the user will be  redirected to TransactionActivity.
+ *
+ * If the user click on remove button this transaction is removed and
+ * the user is redirected to TransactionActivity.
+ *
+ * In this class it is also possible to add new categories to
+ * associate with transactions.
+ */
 public class TransactionActivity extends AppCompatActivity {
 
     private TextView transactionAmount;

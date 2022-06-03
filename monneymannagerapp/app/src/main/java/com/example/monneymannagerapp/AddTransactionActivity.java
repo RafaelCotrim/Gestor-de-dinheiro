@@ -32,6 +32,20 @@ import java.util.List;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Class: AddTransactionActivity
+ * This class is where the new transaction are registered in database.
+ *
+ * When a user chooses to add a new transaction, he needs to enter
+ * an amount, select whether it is a credit or debit action, enter
+ * the date and choose a category.
+ *
+ * In this class it is also possible to add new categories to
+ * associate with transactions.
+ *
+ * When a transaction is created, users are redirected to
+ * DailyTransactionActivity.
+ */
 public class AddTransactionActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPref;

@@ -24,6 +24,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Class: DailyTransactionsActivity
+ * This class is where the user can see their transactions for each day.
+ *
+ * Here, the amount received, amount spent, the total amount are shown
+ * and all transactions on the selected day are listed.
+ *
+ * If the user clicks on a transaction, the data is returned and the
+ * user can edit or remove this transaction.
+ *
+ * If the user clicks on the add button, he is returned to the page where
+ * the transactions are created.
+ */
 public class DailyTransactionsActivity extends AppCompatActivity {
 
     public static final String DATE_EXTRA = "DATE";
@@ -157,8 +170,8 @@ public class DailyTransactionsActivity extends AppCompatActivity {
     }
 
     private void checkLogin(){
-//        if(sharedPref.getLong(getString(R.string.user_id_preference), 0) == 0){
-//            startActivity(new Intent(this, MainActivity.class));
-//        }
+        if(sharedPref.getLong(getString(R.string.user_id_preference), 0) == 0){
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 }

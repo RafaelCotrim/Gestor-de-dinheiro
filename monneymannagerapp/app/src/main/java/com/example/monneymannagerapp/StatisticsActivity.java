@@ -20,6 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Class: StatisticsActivity
+ * This class is where the user can can see the statistics
+ * of their expenses.
+ *
+ * In this activity, a PieChart is returned with the percentages
+ * of amount spent by category.
+ *
+ * So, the user can check which are the main categories
+ * with the highest expenses.
+ */
 public class StatisticsActivity extends AppCompatActivity {
 
     PieChart pieChart;

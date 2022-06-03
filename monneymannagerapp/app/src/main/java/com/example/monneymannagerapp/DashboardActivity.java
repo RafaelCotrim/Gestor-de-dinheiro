@@ -18,6 +18,21 @@ import android.view.MenuItem;
 import com.example.monneymannagerapp.Fragments.MainFragment;
 import com.google.android.material.navigation.NavigationView;
 
+/**
+ * Class: DashboardActivity
+ * This class represents the user's main page activity when logging in.
+ *
+ * When the user logs into the application, they are redirected to this main
+ * page where data such as total amount, and the amount spent per day, week,
+ * month and year are returned.
+ *
+ * On this page we also have a side menu where there are the functionalities
+ * of each user.
+ * The admin, in addition to the normal functionality, has access to the
+ * management of users.
+ *
+ * The layout of this activity is created in MainFragment.
+ */
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private SharedPreferences sharedPref;

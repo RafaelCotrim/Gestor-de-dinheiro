@@ -23,6 +23,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Class: MainActivity
+ * This class is the first activity of this project.
+ *
+ * When open the application this is the activity
+ * returned, and here it is checked if the login has
+ * already been done or not.
+ *
+ * If the user already has a registered login, he is
+ * redirected to the DashboardActivity.
+ *
+ * In case the user does not have a registered login,
+ * he stays in this activity, where he can select the
+ * login or registration option.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Api api;
@@ -64,12 +79,6 @@ public class MainActivity extends AppCompatActivity {
     public void onRegisterActivity(View v){
         Intent registerActivity = new Intent(this, RegisterActivity.class);
         startActivity(registerActivity);
-    }
-
-    // send to Register Activity
-    public void onDASHActivity(View v){
-        Intent dashboardActivity = new Intent(this, DashboardActivity.class);
-        startActivity(dashboardActivity);
     }
 
     private void checkLogin(){
