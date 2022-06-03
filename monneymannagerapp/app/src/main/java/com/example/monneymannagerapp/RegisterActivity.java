@@ -19,6 +19,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Class: RegisterActivity
+ * This class is where the user can register in the application.
+ *
+ * For registration the user needs enter a name, email and password
+ * and click on the registration button.
+ *
+ * If the user already have a register in the application,
+ * the user can select the login option that directs the
+ * user to LoginActivity.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private TextView userNameView;

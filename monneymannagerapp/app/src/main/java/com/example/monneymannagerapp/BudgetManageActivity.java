@@ -22,6 +22,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class: BudgetManageActivity
+ * This class is where the user can edit or remove a budget.
+ *
+ * If the user changes the budget amount or a category and click on
+ * save button this category will be edited and the user will be
+ * redirected to BudgetActivity.
+ *
+ * If the user click on remove button this category is removed and
+ * the user is redirected to BudgetActivity.
+ */
 public class BudgetManageActivity extends AppCompatActivity {
 
     public static final String BUDGET_ID_EXTRA = "ID";

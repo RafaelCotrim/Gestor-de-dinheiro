@@ -17,6 +17,15 @@ import com.example.monneymannagerapp.api.dtos.UserDto;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class: UserManagementActivity
+ * This class is where the admin user can consult all users.
+ *
+ * In this activity, the list of all users is returned.
+ *
+ * The administrator can select a user or can search for a user
+ * with the email and then it is redirected to the UserActivity of that user.
+ */
 public class UserManagementActivity extends AppCompatActivity {
 
     private Api api;

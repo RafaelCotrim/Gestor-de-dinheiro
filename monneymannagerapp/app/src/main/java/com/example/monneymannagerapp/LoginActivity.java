@@ -19,6 +19,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Class: LoginActivity
+ * This class is where the user can log into the application.
+ *
+ * To login, the user needs to enter their valid email and
+ * password and click on the button.
+ *
+ * If the user does not have a register in the application,
+ * the user can select the register option that directs the
+ * user to RegisterActivity.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private Api api;

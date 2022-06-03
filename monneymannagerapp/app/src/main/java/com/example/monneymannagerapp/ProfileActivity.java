@@ -18,6 +18,14 @@ import com.example.monneymannagerapp.api.Api;
 import com.example.monneymannagerapp.api.ApiCallback;
 import com.example.monneymannagerapp.api.dtos.UserForUpdate;
 
+/**
+ * Class: ProfileActivity
+ * This class is where the user manages his profile data.
+ *
+ * In this activity, the user can consult their data and edit
+ * this data updating the fields and clicking on the button
+ * to save these changes.
+ */
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView nameEditInput, emailEditInput, passEditInput, passConfEditInput;

@@ -28,7 +28,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
+/**
+ * Class: BudgetActivity
+ * This class is where the user can see your budgets.
+ *
+ * It returns a list with the defined budgets and the
+ * information of each one, budget amount, spent amount
+ * and category.
+ * In each budget in the list it is also possible to
+ * check if it has been exceeded when the image is red.
+ *
+ * On this page the user can choose to edit a budget
+ * selecting it and can choose to add a new budget when
+ * clicking on the button.
+ */
 public class BudgetActivity extends AppCompatActivity {
 
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
