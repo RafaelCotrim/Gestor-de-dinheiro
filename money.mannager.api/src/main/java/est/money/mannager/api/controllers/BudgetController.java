@@ -9,6 +9,8 @@ import est.money.mannager.api.models.User;
 import est.money.mannager.api.services.BudgetService;
 import est.money.mannager.api.services.CategoryService;
 import est.money.mannager.api.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,11 +33,13 @@ public class BudgetController {
     @Autowired
     private CategoryService categoryService;
 
+    @Operation(summary = "Get all budgets")
     @GetMapping
-    public List<BudgetDto> findAll() {
-        return budgetService.findAll().stream().map(BudgetDto::from).collect(Collectors.toList());
+    public List<BudgetDto> findAll(@Parameter(description = "Whether or not the response should contain category data") @RequestParam(name="category-info", required = false) boolean categoryInfo) {
+        return budgetService.findAll().stream().map(b -> BudgetDto.from(b, categoryInfo, null, null)).collect(Collectors.toList());
     }
 
+    @Operation(summary = "Create budget")
     @PostMapping
     public BudgetDto save(@RequestBody BudgetForCreate bfc) {
 
@@ -50,13 +54,17 @@ public class BudgetController {
         return BudgetDto.from(budgetService.save(new Budget(bfc.value, u, c)));
     }
 
+    @Operation(summary = "Get budget by id")
     @GetMapping("/{id}")
-    public BudgetDto find(@PathVariable long id) {
-        return BudgetDto.from(budgetService.find(id));
+    public BudgetDto find(@Parameter(description = "Id of the budget") @PathVariable long id,
+                          @Parameter(description = "Whether or not the response should contain category data") @RequestParam(name="category-info", required = false) boolean categoryInfo) {
+        return BudgetDto.from(budgetService.find(id), categoryInfo, null, null);
     }
 
+    @Operation(summary = "Update budget")
     @PutMapping("/{id}")
-    public BudgetDto update(@PathVariable Long id, @RequestBody BudgetForUpdate newValue) {
+    public BudgetDto update(@Parameter(description = "Id of the budget") @PathVariable Long id,
+                            @RequestBody BudgetForUpdate newValue) {
 
         Budget b = new Budget();
 
@@ -70,8 +78,10 @@ public class BudgetController {
         return BudgetDto.from(budgetService.update(id, b));
     }
 
+    @Operation(summary = "Delete budget")
     @DeleteMapping("/{id}")
-    void delete(@PathVariable Long id) {
+    void delete(@Parameter(description = "Id of the budget")
+                @PathVariable Long id) {
         budgetService.delete(id);
     }
 }

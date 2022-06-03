@@ -9,6 +9,8 @@ import est.money.mannager.api.models.User;
 import est.money.mannager.api.services.CategoryService;
 import est.money.mannager.api.services.TransactionService;
 import est.money.mannager.api.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +31,10 @@ public class TransactionController {
     @Autowired
     private CategoryService categoryService;
 
+    @Operation(summary = "Get all transactions")
     @GetMapping
-    public List<TransactionDto> findAll(@RequestParam(name="user-info", required = false) boolean userInfo,
-                                        @RequestParam(name="category-info", required = false) boolean categoryInfo) {
+    public List<TransactionDto> findAll(@Parameter(description = "Whether or not to include user data in transaction") @RequestParam(name="user-info", required = false) boolean userInfo,
+                                        @Parameter(description = "Whether or not to include category data in transaction") @RequestParam(name="category-info", required = false) boolean categoryInfo) {
 
         return transactionService.findAll()
                 .stream()
@@ -39,6 +42,7 @@ public class TransactionController {
                 .collect(Collectors.toList());
     }
 
+    @Operation(summary = "Create transaction")
     @PostMapping
     public TransactionDto save(@RequestBody TransactionForCreate tfc) {
         User u = userService.find(tfc.userId);
@@ -47,15 +51,18 @@ public class TransactionController {
         return TransactionDto.from(transactionService.save(new Transaction(tfc.value, d, u, c)));
     }
 
+    @Operation(summary = "Get transaction by id")
     @GetMapping("/{id}")
-    public TransactionDto find(@PathVariable long id,
+    public TransactionDto find(@Parameter(description = "Id of the transaction") @PathVariable long id,
                                @RequestParam(name="user-info", required = false) boolean userInfo,
                                @RequestParam(name="category-info", required = false) boolean categoryInfo) {
         return TransactionDto.from(transactionService.find(id), userInfo, categoryInfo);
     }
 
+    @Operation(summary = "Update transaction")
     @PutMapping("/{id}")
-    public TransactionDto update(@PathVariable Long id, @RequestBody TransactionForUpdate newValue) {
+    public TransactionDto update(@Parameter(description = "Id of the transaction") @PathVariable Long id,
+                                 @RequestBody TransactionForUpdate newValue) {
 
         Transaction t =  transactionService.findOrDefault(id, new Transaction());
         t.setUser(userService.find(newValue.userId));
@@ -63,12 +70,12 @@ public class TransactionController {
         t.setDate(newValue.date);
         t.setValue(newValue.value);
 
-
         return TransactionDto.from(transactionService.update(id, t));
     }
 
+    @Operation(summary = "Delete transaction")
     @DeleteMapping("/{id}")
-    void delete(@PathVariable Long id) {
+    void delete(@Parameter(description = "Id of the transaction") @PathVariable Long id) {
         transactionService.delete(id);
     }
 }
