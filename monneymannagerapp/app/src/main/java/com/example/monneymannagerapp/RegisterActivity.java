@@ -63,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void onLoginActivity(View v){
         Intent loginActivity = new Intent(this, LoginActivity.class);
+        finish();
         startActivity(loginActivity);
     }
 
@@ -105,6 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                         .putBoolean(getString(R.string.user_admin_preference), u.admin)
                         .putString(getString(R.string.user_email_preference), u.email)
                         .apply();
+                finish();
                 startActivity(new Intent(context, DashboardActivity.class));
             }
 
@@ -122,6 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void checkLogin(){
         if(sharedPref.getLong(getString(R.string.user_id_preference), 0) != 0){
             Intent dashboardActivity = new Intent(this, DashboardActivity.class);
+            finish();
             startActivity(dashboardActivity);
         }
     }

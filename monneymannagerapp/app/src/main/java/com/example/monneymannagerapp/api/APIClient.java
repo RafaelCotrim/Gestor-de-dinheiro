@@ -6,9 +6,13 @@ import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Class: APIClient
+ *
+ * Class responsible for creating and managing references to the API
+ */
 public class APIClient {
 
-    private static Retrofit retrofit = null;
     private static Api api = null;
 
     public static Api getApi() {
@@ -17,11 +21,7 @@ public class APIClient {
             return api;
         }
 
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create();
-
-        retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.0.20:8080")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

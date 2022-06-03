@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     // send to Register Activity
     public void onResgiterActivity(View v){
         Intent registerActivity = new Intent(this, RegisterActivity.class);
+        finish();
         startActivity(registerActivity);
     }
 
@@ -92,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                         .apply();
 
                 Intent dashboardActivity = new Intent(context, DashboardActivity.class);
+                finish();
                 startActivity(dashboardActivity);
             }
 
@@ -106,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(sharedPref.getLong(getString(R.string.user_id_preference), 0) != 0){
             Intent dashboardActivity = new Intent(this, DashboardActivity.class);
+            finish();
             startActivity(dashboardActivity);
         }
     }

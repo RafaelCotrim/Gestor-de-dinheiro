@@ -27,6 +27,9 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+/**
+ * Retrofit interface used to communicate with the API
+ * */
 public interface Api {
 
     // Auth methods

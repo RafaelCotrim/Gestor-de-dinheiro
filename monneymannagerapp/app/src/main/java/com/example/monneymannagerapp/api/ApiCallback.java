@@ -10,6 +10,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Class: ApiCallback<T>
+ *
+ *     Class made to simplify the process of receiving data from the API
+ *     The callback logs basic information fo the request and shows an error
+ *     message if necessary before calling the response handler.
+ *
+ *     If, for any reason, the request fails, null is passed to the response handler.
+ */
 public class ApiCallback<T> implements Callback<T> {
 
     private final ResponseHandler<T> responseHandler;
@@ -28,7 +37,11 @@ public class ApiCallback<T> implements Callback<T> {
         responseHandler.method(response.body());
 
         if(!response.isSuccessful()){
-            Toast.makeText(context, "Não foi possível executar a operação", Toast.LENGTH_LONG).show();
+            if(call.request().method().equals("GET")){
+                Toast.makeText(context, "Não foi possível adquirir dados da API", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "Não foi possível executar a operação", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -36,6 +49,10 @@ public class ApiCallback<T> implements Callback<T> {
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
         Log.v(TAG, String.format("%s %s (%s)", call.request().method(), call.request().url().url(), t.toString()));
         responseHandler.method(null);
-        Toast.makeText(context, "Não foi possível executar a operação", Toast.LENGTH_LONG).show();
+        if(call.request().method().equals("GET")){
+            Toast.makeText(context, "Não foi possível adquirir dados da API", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Não foi possível executar a operação", Toast.LENGTH_LONG).show();
+        }
     }
 }

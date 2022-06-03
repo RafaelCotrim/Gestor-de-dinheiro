@@ -40,7 +40,6 @@ import retrofit2.Response;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private Api api;
     private SharedPreferences sharedPref;
 
     @Override
@@ -48,17 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        api = APIClient.getApi();
         sharedPref = this.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
-
-        api.getTransactions(true, true)
-                .enqueue(new ApiCallback<>(this, data -> {
-                    if(data != null){
-                        for (TransactionDto t: data) {
-                            Log.v("TEST", "" + t.id);
-                        }
-                    }
-                }));
 
         checkLogin();
     }
@@ -72,12 +61,14 @@ public class MainActivity extends AppCompatActivity {
     // send to Login Activity
     public void onLoginActivity(View v){
         Intent loginActivity = new Intent(this, LoginActivity.class);
+        finish();
         startActivity(loginActivity);
     }
 
     // send to Register Activity
     public void onRegisterActivity(View v){
         Intent registerActivity = new Intent(this, RegisterActivity.class);
+        finish();
         startActivity(registerActivity);
     }
 
@@ -85,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(sharedPref.getLong(getString(R.string.user_id_preference), 0) != 0){
             Intent dashboardActivity = new Intent(this, DashboardActivity.class);
+            finish();
             startActivity(dashboardActivity);
         }
     }
