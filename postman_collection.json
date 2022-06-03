@@ -1,0 +1,691 @@
+{
+	"info": {
+		"_postman_id": "0c395c33-1755-4735-b17f-edbaf82ebc80",
+		"name": "Trabalho Spring + Android",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"example@gmail.com\",\r\n    \"password\": \"example\",\r\n    \"confirmation\": \"example\",\r\n    \"name\": \"Example\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Budgets",
+			"item": [
+				{
+					"name": "Get all budgets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/budgets?category-info=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"budgets"
+							],
+							"query": [
+								{
+									"key": "category-info",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get budget by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/budgets/{{budget_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"budgets",
+								"{{budget_id}}"
+							],
+							"query": [
+								{
+									"key": "category-info",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new budget",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": 300,\r\n    \"categoryId\": 2,\r\n    \"userId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/budgets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"budgets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update budget",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": 60,\r\n    \"categoryId\": {{category_id}},\r\n    \"userId\": {{user_id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/budgets/{{budget_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"budgets",
+								"{{budget_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete budget",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/budgets/{{budget_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"budgets",
+								"{{budget_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get all categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New Category\",\r\n    \"userId\": {{user_id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get category by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Updated Category\",\r\n    \"userId\": {{user_id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Get all transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/transactions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "user-info",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "category-info",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get transaction by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/transactions/{{transaction_id}}?user-info=true&category-info=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transactions",
+								"{{transaction_id}}"
+							],
+							"query": [
+								{
+									"key": "user-info",
+									"value": "true"
+								},
+								{
+									"key": "category-info",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": 560,\r\n    \"userId\": 1,\r\n    \"categoryId\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/transactions/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transactions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Transaction",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/transactions/{{transaction_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transactions",
+								"{{transaction_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update transaction",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"value\": -90.0,\r\n        \"date\": \"2022-06-02\",\r\n        \"userId\": {{user_id}},\r\n        \"categoryId\": 0\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/transactions/{{transaction_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transactions",
+								"{{transaction_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}/transactions?category-info=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2022-05-28",
+									"disabled": true
+								},
+								{
+									"key": "category-info",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user budgets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}/budgets?category-info=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"budgets"
+							],
+							"query": [
+								{
+									"key": "category-info",
+									"value": "true"
+								},
+								{
+									"key": "date-start",
+									"value": "2022-06-01",
+									"disabled": true
+								},
+								{
+									"key": "date-end",
+									"value": "2022-06-30",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user satatistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}/statistics",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"statistics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user dashboard statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}/dashboard",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"dashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Updated User\",\r\n    \"email\": \"updated.user@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"confirmation\": \"password\",\r\n    \"admin\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "default"
+		},
+		{
+			"key": "user_id",
+			"value": "2",
+			"type": "default"
+		},
+		{
+			"key": "transaction_id",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "category_id",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "budget_id",
+			"value": "1",
+			"type": "default"
+		}
+	]
+}

@@ -82,7 +82,7 @@ public class DailyTransactionsActivity extends AppCompatActivity {
 
         checkLogin();
         parseDate();
-        loadData();
+        //loadData();
     }
 
     @Override
