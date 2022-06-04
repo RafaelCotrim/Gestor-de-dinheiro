@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 
 @Service
@@ -31,6 +31,11 @@ public class UserService extends BaseService<User, UserRepository>{
 
         if(updatePass && !newUser.password.equals(newUser.confirmation)){
             throw  new ResponseStatusException(BAD_REQUEST);
+        }
+
+        Optional<User> u = repo.findByEmail(newUser.email);
+        if(u.isPresent() && u.get().getId() != id){
+            throw  new ResponseStatusException(CONFLICT);
         }
 
         return repo.findById(id)

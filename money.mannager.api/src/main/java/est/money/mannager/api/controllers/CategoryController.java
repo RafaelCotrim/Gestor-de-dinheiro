@@ -4,7 +4,6 @@ import est.money.mannager.api.dtos.CategoryDto;
 import est.money.mannager.api.dtos.CategoryForCreate;
 import est.money.mannager.api.dtos.CategoryForUpdate;
 import est.money.mannager.api.models.Category;
-import est.money.mannager.api.models.User;
 import est.money.mannager.api.services.CategoryService;
 import est.money.mannager.api.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/categories")
